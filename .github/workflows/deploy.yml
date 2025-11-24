@@ -22,6 +22,9 @@ jobs:
           POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
           EOF
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Start PostgreSQL container
         run: docker compose -f docker-compose.prod.yml up -d postgres
 
@@ -41,6 +44,8 @@ jobs:
 
       - name: Push database schema
         run: npx prisma db push --accept-data-loss
+        env:
+          DATABASE_URL: "postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}"
 
       - name: Build Docker images
         run: docker compose -f docker-compose.prod.yml build app
