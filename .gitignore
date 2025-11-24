@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -42,3 +43,14 @@ next-env.d.ts
 
 # claude
 .claude/
+/app/generated/prisma
+
+# docker
+docker-compose.override.yml
+
+# database
+*.db
+*.db-journal
+
+# deployment-guide
+deployment-guide.html
