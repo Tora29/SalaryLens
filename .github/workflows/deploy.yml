@@ -7,46 +7,35 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Mini PC via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.MINI_PC_HOST }}
-          username: ${{ secrets.MINI_PC_USER }}
-          key: ${{ secrets.MINI_PC_SSH_KEY }}
-          port: ${{ secrets.MINI_PC_PORT || 22 }}
-          script: |
-            cd ~/SalaryLens
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          DATABASE_URL="${{ secrets.DATABASE_URL }}"
+          POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+          POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+          POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
+          EOF
 
-            # 最新のコードを取得
-            git pull origin main
+      - name: Build Docker images
+        run: docker compose -f docker-compose.prod.yml build
 
-            # .envファイルをGitHub Secretsから生成
-            cat > .env << EOF
-            DATABASE_URL="${{ secrets.DATABASE_URL }}"
-            POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
-            POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
-            POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
-            EOF
+      - name: Start containers
+        run: docker compose -f docker-compose.prod.yml up -d
 
-            # Dockerイメージを再ビルド
-            docker compose -f docker-compose.prod.yml build
+      - name: Wait for containers to be ready
+        run: sleep 10
 
-            # コンテナを再起動
-            docker compose -f docker-compose.prod.yml up -d
+      - name: Run database migrations
+        run: docker exec salarylens-app-prod npx prisma migrate deploy
 
-            # データベースマイグレーション実行
-            docker exec salarylens-app-prod npx prisma migrate deploy
-
-            # 古いイメージを削除（ディスク節約）
-            docker image prune -f
-
-            echo "Deployment completed successfully!"
+      - name: Clean up old images
+        run: docker image prune -f
 
       - name: Notify deployment status
         if: always()
