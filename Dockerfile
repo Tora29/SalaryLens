@@ -16,7 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Prisma Clientを生成
+# Prisma Clientを生成（ビルド時のダミー環境変数）
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 RUN npx prisma generate
 
 # Next.jsのビルド
