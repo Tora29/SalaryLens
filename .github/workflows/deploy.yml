@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Stop existing containers
-        run: docker compose -f docker-compose.prod.yml down || true
+        run: docker compose down || true
 
       - name: Create .env file
         run: |
@@ -29,13 +29,13 @@ jobs:
         run: npm ci
 
       - name: Start PostgreSQL container
-        run: docker compose -f docker-compose.prod.yml up -d postgres
+        run: docker compose up -d postgres
 
       - name: Wait for PostgreSQL to be ready
         run: |
           echo "Waiting for PostgreSQL to be ready..."
           for i in {1..30}; do
-            if docker exec salarylens-postgres-prod pg_isready -U postgres > /dev/null 2>&1; then
+            if docker exec salarylens-postgres pg_isready -U postgres > /dev/null 2>&1; then
               echo "PostgreSQL is ready!"
               exit 0
             fi
@@ -51,10 +51,10 @@ jobs:
           DATABASE_URL: "postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}"
 
       - name: Build Docker images
-        run: docker compose -f docker-compose.prod.yml build app
+        run: docker compose build app
 
-      - name: Start app and nginx containers
-        run: docker compose -f docker-compose.prod.yml up -d app nginx
+      - name: Start all containers
+        run: docker compose up -d
 
       - name: Clean up old images
         run: docker image prune -f
