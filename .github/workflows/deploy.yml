@@ -22,14 +22,31 @@ jobs:
           POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
           EOF
 
-      - name: Push database schema (before build)
+      - name: Start PostgreSQL container
+        run: docker compose -f docker-compose.prod.yml up -d postgres
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          echo "Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            if docker exec salarylens-postgres-prod pg_isready -U postgres > /dev/null 2>&1; then
+              echo "PostgreSQL is ready!"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+          echo "PostgreSQL failed to become ready in time"
+          exit 1
+
+      - name: Push database schema
         run: npx prisma db push --accept-data-loss
 
       - name: Build Docker images
-        run: docker compose -f docker-compose.prod.yml build
+        run: docker compose -f docker-compose.prod.yml build app
 
-      - name: Start containers
-        run: docker compose -f docker-compose.prod.yml up -d
+      - name: Start app and nginx containers
+        run: docker compose -f docker-compose.prod.yml up -d app nginx
 
       - name: Clean up old images
         run: docker image prune -f
