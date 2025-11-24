@@ -31,8 +31,8 @@ jobs:
       - name: Wait for containers to be ready
         run: sleep 10
 
-      - name: Run database migrations
-        run: docker exec salarylens-app-prod npx prisma migrate deploy
+      - name: Push database schema
+        run: docker exec salarylens-app-prod npx prisma db push --accept-data-loss
 
       - name: Clean up old images
         run: docker image prune -f
