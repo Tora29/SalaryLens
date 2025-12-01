@@ -36,9 +36,15 @@ yarn-error.log*
 # vercel
 .vercel
 
+# claude
+.claude
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
 # auto-generated type files
 /types
+
+# mockup
+public/mockup.html
