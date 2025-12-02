@@ -38,6 +38,7 @@ yarn-error.log*
 
 # claude
 .claude
+CLAUDE.md
 
 # typescript
 *.tsbuildinfo
@@ -47,4 +48,4 @@ next-env.d.ts
 /types
 
 # mockup
-public/mockup.html
+public/mockup*.*
