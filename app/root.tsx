@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 
 import { Moon, Sun } from "lucide-react";
@@ -42,35 +43,8 @@ export const links: Route.LinksFunction = () => [
 ];
 
 // テーマ切り替えボタンコンポーネント
-function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
-
-  // クライアントサイドでのみ実行
-  useEffect(() => {
-    // Cookie からテーマを読み取る
-    const cookieTheme = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("theme="))
-      ?.split("=")[1] as Theme | undefined;
-
-    // Cookie がなければシステム設定を使用
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-
-    const initialTheme = cookieTheme ?? systemTheme;
-    setTheme(initialTheme);
-
-    // html 要素の class を同期
-    if (initialTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-    setMounted(true);
-  }, []);
+function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
 
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
@@ -86,19 +60,6 @@ function ThemeToggle() {
       document.documentElement.classList.remove("dark");
     }
   };
-
-  // マウント前は何も表示しない（ハイドレーションエラー防止）
-  if (!mounted) {
-    return (
-      <button
-        type="button"
-        className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800"
-        aria-label="Toggle theme"
-      >
-        <Moon className="w-5 h-5 text-gray-700" />
-      </button>
-    );
-  }
 
   return (
     <button
@@ -117,6 +78,9 @@ function ThemeToggle() {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+  const initialTheme = data?.theme ?? "light";
+
   return (
     <html lang="ja">
       <head>
@@ -143,7 +107,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <header className="fixed top-4 right-4 z-50">
-          <ThemeToggle />
+          <ThemeToggle initialTheme={initialTheme} />
         </header>
         {children}
         <ScrollRestoration />

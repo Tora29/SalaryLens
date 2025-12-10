@@ -1,3 +1,4 @@
+import { isRouteErrorResponse } from "react-router";
 import type { Route } from "./+types/route";
 import { TrendingUp, Wallet, Calendar, Banknote } from "lucide-react";
 import { getDashboardData } from "./server";
@@ -18,7 +19,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       <div className="max-w-7xl mx-auto">
         {/* ヘッダー */}
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">ダッシュボード</h1>
+          <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
+            ダッシュボード
+          </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
             あなたの給与データの概要
           </p>
@@ -45,7 +48,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           />
           <SummaryCard
             title="今月の手取り"
-            value={formatCurrency(monthlySalaries[monthlySalaries.length - 1]?.netSalary ?? 0)}
+            value={formatCurrency(
+              monthlySalaries[monthlySalaries.length - 1]?.netSalary ?? 0
+            )}
             icon={Calendar}
           />
         </div>
@@ -57,6 +62,36 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
 
         {/* 履歴テーブル */}
         <RecentHistory records={recentRecords} />
+      </div>
+    </main>
+  );
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    // data() で投げたエラー（404, 500等）
+    return (
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
+            {error.status}
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">{error.data}</p>
+        </div>
+      </main>
+    );
+  }
+
+  // 予期しないエラー（DB障害、バグ等）
+  return (
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
+          エラー
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">
+          予期しないエラーが発生しました
+        </p>
       </div>
     </main>
   );

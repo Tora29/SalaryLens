@@ -36,38 +36,38 @@ Tailwind CSS で Material Design 3（M3）の原則に沿った UI を実装す�
 /* tailwind.config.js または CSS 変数で定義 */
 :root {
   /* Primary - メインのブランドカラー */
-  --md-primary: #6750A4;
-  --md-on-primary: #FFFFFF;
-  --md-primary-container: #EADDFF;
-  --md-on-primary-container: #21005D;
+  --md-primary: #6750a4;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #eaddff;
+  --md-on-primary-container: #21005d;
 
   /* Secondary - 補助的なアクセント */
-  --md-secondary: #625B71;
-  --md-on-secondary: #FFFFFF;
-  --md-secondary-container: #E8DEF8;
-  --md-on-secondary-container: #1D192B;
+  --md-secondary: #625b71;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #e8def8;
+  --md-on-secondary-container: #1d192b;
 
   /* Tertiary - 三次的なアクセント */
-  --md-tertiary: #7D5260;
-  --md-on-tertiary: #FFFFFF;
-  --md-tertiary-container: #FFD8E4;
-  --md-on-tertiary-container: #31111D;
+  --md-tertiary: #7d5260;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #ffd8e4;
+  --md-on-tertiary-container: #31111d;
 
   /* Error - エラー状態 */
-  --md-error: #B3261E;
-  --md-on-error: #FFFFFF;
-  --md-error-container: #F9DEDC;
-  --md-on-error-container: #410E0B;
+  --md-error: #b3261e;
+  --md-on-error: #ffffff;
+  --md-error-container: #f9dedc;
+  --md-on-error-container: #410e0b;
 
   /* Surface - 背景・表面 */
-  --md-surface: #FEF7FF;
-  --md-on-surface: #1D1B20;
-  --md-surface-variant: #E7E0EC;
-  --md-on-surface-variant: #49454F;
+  --md-surface: #fef7ff;
+  --md-on-surface: #1d1b20;
+  --md-surface-variant: #e7e0ec;
+  --md-on-surface-variant: #49454f;
 
   /* Outline */
-  --md-outline: #79747E;
-  --md-outline-variant: #CAC4D0;
+  --md-outline: #79747e;
+  --md-outline-variant: #cac4d0;
 }
 ```
 
@@ -80,41 +80,41 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: 'var(--md-primary)',
-          container: 'var(--md-primary-container)',
+          DEFAULT: "var(--md-primary)",
+          container: "var(--md-primary-container)",
         },
         secondary: {
-          DEFAULT: 'var(--md-secondary)',
-          container: 'var(--md-secondary-container)',
+          DEFAULT: "var(--md-secondary)",
+          container: "var(--md-secondary-container)",
         },
         surface: {
-          DEFAULT: 'var(--md-surface)',
-          variant: 'var(--md-surface-variant)',
+          DEFAULT: "var(--md-surface)",
+          variant: "var(--md-surface-variant)",
         },
         outline: {
-          DEFAULT: 'var(--md-outline)',
-          variant: 'var(--md-outline-variant)',
+          DEFAULT: "var(--md-outline)",
+          variant: "var(--md-outline-variant)",
         },
         error: {
-          DEFAULT: 'var(--md-error)',
-          container: 'var(--md-error-container)',
+          DEFAULT: "var(--md-error)",
+          container: "var(--md-error-container)",
         },
       },
     },
   },
-}
+};
 ```
 
 ### カラー使用ルール
 
-| 用途 | トークン |
-|------|----------|
-| 主要なアクション（CTA ボタン） | `primary` |
-| 主要ボタンのテキスト | `on-primary` |
-| カード・モーダルの背景 | `surface` |
-| 低優先度のアクション | `secondary` |
-| エラーメッセージ | `error` |
-| 境界線 | `outline` / `outline-variant` |
+| 用途                           | トークン                      |
+| ------------------------------ | ----------------------------- |
+| 主要なアクション（CTA ボタン） | `primary`                     |
+| 主要ボタンのテキスト           | `on-primary`                  |
+| カード・モーダルの背景         | `surface`                     |
+| 低優先度のアクション           | `secondary`                   |
+| エラーメッセージ               | `error`                       |
+| 境界線                         | `outline` / `outline-variant` |
 
 ---
 
@@ -126,45 +126,75 @@ export default {
 /* M3 Type Scale - Tailwind クラスでの実装 */
 
 /* Display */
-.text-display-large { @apply text-[57px] leading-[64px] tracking-[-0.25px]; }
-.text-display-medium { @apply text-[45px] leading-[52px] tracking-[0]; }
-.text-display-small { @apply text-[36px] leading-[44px] tracking-[0]; }
+.text-display-large {
+  @apply text-[57px] leading-[64px] tracking-[-0.25px];
+}
+.text-display-medium {
+  @apply text-[45px] leading-[52px] tracking-[0];
+}
+.text-display-small {
+  @apply text-[36px] leading-[44px] tracking-[0];
+}
 
 /* Headline */
-.text-headline-large { @apply text-[32px] leading-[40px] tracking-[0]; }
-.text-headline-medium { @apply text-[28px] leading-[36px] tracking-[0]; }
-.text-headline-small { @apply text-[24px] leading-[32px] tracking-[0]; }
+.text-headline-large {
+  @apply text-[32px] leading-[40px] tracking-[0];
+}
+.text-headline-medium {
+  @apply text-[28px] leading-[36px] tracking-[0];
+}
+.text-headline-small {
+  @apply text-[24px] leading-[32px] tracking-[0];
+}
 
 /* Title */
-.text-title-large { @apply text-[22px] leading-[28px] tracking-[0]; }
-.text-title-medium { @apply text-[16px] leading-[24px] tracking-[0.15px] font-medium; }
-.text-title-small { @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium; }
+.text-title-large {
+  @apply text-[22px] leading-[28px] tracking-[0];
+}
+.text-title-medium {
+  @apply text-[16px] leading-[24px] tracking-[0.15px] font-medium;
+}
+.text-title-small {
+  @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium;
+}
 
 /* Body */
-.text-body-large { @apply text-[16px] leading-[24px] tracking-[0.5px]; }
-.text-body-medium { @apply text-[14px] leading-[20px] tracking-[0.25px]; }
-.text-body-small { @apply text-[12px] leading-[16px] tracking-[0.4px]; }
+.text-body-large {
+  @apply text-[16px] leading-[24px] tracking-[0.5px];
+}
+.text-body-medium {
+  @apply text-[14px] leading-[20px] tracking-[0.25px];
+}
+.text-body-small {
+  @apply text-[12px] leading-[16px] tracking-[0.4px];
+}
 
 /* Label */
-.text-label-large { @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium; }
-.text-label-medium { @apply text-[12px] leading-[16px] tracking-[0.5px] font-medium; }
-.text-label-small { @apply text-[11px] leading-[16px] tracking-[0.5px] font-medium; }
+.text-label-large {
+  @apply text-[14px] leading-[20px] tracking-[0.1px] font-medium;
+}
+.text-label-medium {
+  @apply text-[12px] leading-[16px] tracking-[0.5px] font-medium;
+}
+.text-label-small {
+  @apply text-[11px] leading-[16px] tracking-[0.5px] font-medium;
+}
 ```
 
 ### Tailwind での近似実装
 
-| M3 スタイル | Tailwind クラス |
-|------------|-----------------|
-| Display Large | `text-6xl font-normal` |
-| Display Medium | `text-5xl font-normal` |
-| Headline Large | `text-3xl font-normal` |
-| Headline Medium | `text-2xl font-normal` |
-| Title Large | `text-xl font-normal` |
-| Title Medium | `text-base font-medium` |
-| Body Large | `text-base font-normal` |
-| Body Medium | `text-sm font-normal` |
-| Label Large | `text-sm font-medium` |
-| Label Small | `text-xs font-medium` |
+| M3 スタイル     | Tailwind クラス         |
+| --------------- | ----------------------- |
+| Display Large   | `text-6xl font-normal`  |
+| Display Medium  | `text-5xl font-normal`  |
+| Headline Large  | `text-3xl font-normal`  |
+| Headline Medium | `text-2xl font-normal`  |
+| Title Large     | `text-xl font-normal`   |
+| Title Medium    | `text-base font-medium` |
+| Body Large      | `text-base font-normal` |
+| Body Medium     | `text-sm font-normal`   |
+| Label Large     | `text-sm font-medium`   |
+| Label Small     | `text-xs font-medium`   |
 
 ---
 
@@ -172,15 +202,15 @@ export default {
 
 ### Shape Scale
 
-| カテゴリ | 値 | Tailwind | 用途 |
-|----------|-----|----------|------|
-| None | 0px | `rounded-none` | 画像 |
-| Extra Small | 4px | `rounded` | チップ、小さい要素 |
-| Small | 8px | `rounded-lg` | テキストフィールド |
-| Medium | 12px | `rounded-xl` | カード |
-| Large | 16px | `rounded-2xl` | モーダル、シート |
-| Extra Large | 28px | `rounded-[28px]` | FAB |
-| Full | 50% | `rounded-full` | アイコンボタン |
+| カテゴリ    | 値   | Tailwind         | 用途               |
+| ----------- | ---- | ---------------- | ------------------ |
+| None        | 0px  | `rounded-none`   | 画像               |
+| Extra Small | 4px  | `rounded`        | チップ、小さい要素 |
+| Small       | 8px  | `rounded-lg`     | テキストフィールド |
+| Medium      | 12px | `rounded-xl`     | カード             |
+| Large       | 16px | `rounded-2xl`    | モーダル、シート   |
+| Extra Large | 28px | `rounded-[28px]` | FAB                |
+| Full        | 50%  | `rounded-full`   | アイコンボタン     |
 
 ---
 
@@ -190,24 +220,36 @@ export default {
 
 ```css
 /* M3 Elevation - Tailwind shadow 拡張 */
-.elevation-0 { @apply shadow-none; }
-.elevation-1 { @apply shadow-sm; }  /* 1dp */
-.elevation-2 { @apply shadow; }      /* 3dp */
-.elevation-3 { @apply shadow-md; }   /* 6dp */
-.elevation-4 { @apply shadow-lg; }   /* 8dp */
-.elevation-5 { @apply shadow-xl; }   /* 12dp */
+.elevation-0 {
+  @apply shadow-none;
+}
+.elevation-1 {
+  @apply shadow-sm;
+} /* 1dp */
+.elevation-2 {
+  @apply shadow;
+} /* 3dp */
+.elevation-3 {
+  @apply shadow-md;
+} /* 6dp */
+.elevation-4 {
+  @apply shadow-lg;
+} /* 8dp */
+.elevation-5 {
+  @apply shadow-xl;
+} /* 12dp */
 ```
 
 ### 用途
 
-| レベル | 用途 |
-|--------|------|
-| 0 | 通常状態のサーフェス |
-| 1 | カード、ホバー状態 |
-| 2 | ナビゲーションバー |
-| 3 | FAB、スナックバー |
-| 4 | モーダル、ダイアログ |
-| 5 | ドロワー |
+| レベル | 用途                 |
+| ------ | -------------------- |
+| 0      | 通常状態のサーフェス |
+| 1      | カード、ホバー状態   |
+| 2      | ナビゲーションバー   |
+| 3      | FAB、スナックバー    |
+| 4      | モーダル、ダイアログ |
+| 5      | ドロワー             |
 
 ---
 
@@ -215,13 +257,13 @@ export default {
 
 ### 4px グリッドシステム
 
-| 値 | Tailwind | 用途 |
-|----|----------|------|
-| 4px | `p-1`, `m-1`, `gap-1` | 最小間隔 |
-| 8px | `p-2`, `m-2`, `gap-2` | コンパクトな要素間 |
-| 12px | `p-3`, `m-3`, `gap-3` | 中程度の要素間 |
-| 16px | `p-4`, `m-4`, `gap-4` | 標準の要素間 |
-| 24px | `p-6`, `m-6`, `gap-6` | セクション間 |
+| 値   | Tailwind              | 用途               |
+| ---- | --------------------- | ------------------ |
+| 4px  | `p-1`, `m-1`, `gap-1` | 最小間隔           |
+| 8px  | `p-2`, `m-2`, `gap-2` | コンパクトな要素間 |
+| 12px | `p-3`, `m-3`, `gap-3` | 中程度の要素間     |
+| 16px | `p-4`, `m-4`, `gap-4` | 標準の要素間       |
+| 24px | `p-6`, `m-6`, `gap-6` | セクション間       |
 | 32px | `p-8`, `m-8`, `gap-8` | 大きなセクション間 |
 
 ---
@@ -231,7 +273,8 @@ export default {
 ### Filled Button
 
 ```html
-<button class="
+<button
+  class="
   bg-primary text-white
   px-6 py-2.5
   rounded-full
@@ -240,7 +283,8 @@ export default {
   active:shadow-none
   transition-shadow
   disabled:opacity-38 disabled:shadow-none
-">
+"
+>
   Button
 </button>
 ```
@@ -248,7 +292,8 @@ export default {
 ### Outlined Button
 
 ```html
-<button class="
+<button
+  class="
   border border-outline
   text-primary
   px-6 py-2.5
@@ -257,7 +302,8 @@ export default {
   hover:bg-primary/8
   active:bg-primary/12
   transition-colors
-">
+"
+>
   Button
 </button>
 ```
@@ -265,7 +311,8 @@ export default {
 ### Text Button
 
 ```html
-<button class="
+<button
+  class="
   text-primary
   px-3 py-2.5
   rounded-full
@@ -273,7 +320,8 @@ export default {
   hover:bg-primary/8
   active:bg-primary/12
   transition-colors
-">
+"
+>
   Button
 </button>
 ```
@@ -281,14 +329,16 @@ export default {
 ### Card
 
 ```html
-<div class="
+<div
+  class="
   bg-surface
   rounded-xl
   p-4
   shadow-sm
   hover:shadow-md
   transition-shadow
-">
+"
+>
   <h3 class="text-title-medium text-on-surface">Card Title</h3>
   <p class="text-body-medium text-on-surface-variant mt-2">
     Card content goes here.
@@ -299,12 +349,14 @@ export default {
 ### Elevated Card
 
 ```html
-<div class="
+<div
+  class="
   bg-surface
   rounded-xl
   p-4
   shadow-md
-">
+"
+>
   <h3 class="text-lg font-medium">Elevated Card</h3>
   <p class="text-sm text-on-surface-variant mt-2">
     Content with more prominence.
@@ -315,11 +367,13 @@ export default {
 ### Filled Card
 
 ```html
-<div class="
+<div
+  class="
   bg-surface-variant
   rounded-xl
   p-4
-">
+"
+>
   <h3 class="text-lg font-medium">Filled Card</h3>
   <p class="text-sm text-on-surface-variant mt-2">
     Subtle background distinction.
@@ -346,7 +400,8 @@ export default {
       transition-colors
     "
   />
-  <label class="
+  <label
+    class="
     absolute left-3 top-4
     text-on-surface-variant
     bg-surface
@@ -355,7 +410,8 @@ export default {
     peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-primary
     peer-[:not(:placeholder-shown)]:-top-2.5
     peer-[:not(:placeholder-shown)]:text-xs
-  ">
+  "
+  >
     Label
   </label>
 </div>
@@ -364,7 +420,8 @@ export default {
 ### Chip（Filter）
 
 ```html
-<button class="
+<button
+  class="
   flex items-center gap-2
   px-4 py-1.5
   rounded-lg
@@ -373,7 +430,8 @@ export default {
   hover:bg-on-surface/8
   aria-selected:bg-secondary-container
   aria-selected:border-transparent
-">
+"
+>
   <span>Filter</span>
 </button>
 ```
@@ -381,7 +439,8 @@ export default {
 ### FAB（Floating Action Button）
 
 ```html
-<button class="
+<button
+  class="
   bg-primary-container
   text-on-primary-container
   p-4
@@ -390,7 +449,8 @@ export default {
   hover:shadow-xl
   active:shadow-md
   transition-shadow
-">
+"
+>
   <PlusIcon class="w-6 h-6" />
 </button>
 ```
@@ -398,13 +458,15 @@ export default {
 ### Navigation Bar Item
 
 ```html
-<a class="
+<a
+  class="
   flex flex-col items-center gap-1
   px-4 py-3
   rounded-2xl
   hover:bg-on-surface/8
   aria-selected:bg-secondary-container
-">
+"
+>
   <HomeIcon class="w-6 h-6" />
   <span class="text-xs font-medium">Home</span>
 </a>
@@ -413,7 +475,8 @@ export default {
 ### Snackbar
 
 ```html
-<div class="
+<div
+  class="
   fixed bottom-4 left-1/2 -translate-x-1/2
   bg-inverse-surface
   text-inverse-on-surface
@@ -421,28 +484,31 @@ export default {
   rounded-lg
   shadow-lg
   flex items-center gap-4
-">
+"
+>
   <span class="text-sm">Message sent</span>
-  <button class="text-inverse-primary text-sm font-medium">
-    Undo
-  </button>
+  <button class="text-inverse-primary text-sm font-medium">Undo</button>
 </div>
 ```
 
 ### Dialog
 
 ```html
-<div class="
+<div
+  class="
   fixed inset-0 flex items-center justify-center
   bg-black/50
-">
-  <div class="
+"
+>
+  <div
+    class="
     bg-surface
     rounded-[28px]
     p-6
     w-full max-w-md
     shadow-xl
-  ">
+  "
+  >
     <h2 class="text-2xl">Dialog Title</h2>
     <p class="text-sm text-on-surface-variant mt-4">
       Dialog content and supporting text.
@@ -451,7 +517,9 @@ export default {
       <button class="text-primary px-3 py-2 rounded-full text-sm font-medium">
         Cancel
       </button>
-      <button class="bg-primary text-white px-6 py-2 rounded-full text-sm font-medium">
+      <button
+        class="bg-primary text-white px-6 py-2 rounded-full text-sm font-medium"
+      >
         Confirm
       </button>
     </div>
@@ -467,34 +535,46 @@ export default {
 
 ```css
 /* 状態レイヤーの不透明度 */
-.state-hover { @apply bg-current/8; }   /* 8% */
-.state-focus { @apply bg-current/12; }  /* 12% */
-.state-press { @apply bg-current/12; }  /* 12% */
-.state-drag { @apply bg-current/16; }   /* 16% */
+.state-hover {
+  @apply bg-current/8;
+} /* 8% */
+.state-focus {
+  @apply bg-current/12;
+} /* 12% */
+.state-press {
+  @apply bg-current/12;
+} /* 12% */
+.state-drag {
+  @apply bg-current/16;
+} /* 16% */
 ```
 
 ### 実装パターン
 
 ```html
 <!-- ボタンの状態 -->
-<button class="
+<button
+  class="
   relative
   bg-primary text-white
   px-6 py-2.5 rounded-full
   hover:before:absolute hover:before:inset-0
   hover:before:bg-white/8 hover:before:rounded-full
   active:before:bg-white/12
-">
+"
+>
   Button
 </button>
 
 <!-- 簡易版（背景色変更） -->
-<button class="
+<button
+  class="
   bg-primary text-white
   px-6 py-2.5 rounded-full
   hover:bg-primary/90
   active:bg-primary/80
-">
+"
+>
   Button
 </button>
 ```
@@ -505,11 +585,11 @@ export default {
 
 ### コントラスト比要件
 
-| 要素 | 最小コントラスト比 |
-|------|-------------------|
-| 通常テキスト | 4.5:1 |
-| 大きいテキスト（18px+） | 3:1 |
-| UI コンポーネント | 3:1 |
+| 要素                    | 最小コントラスト比 |
+| ----------------------- | ------------------ |
+| 通常テキスト            | 4.5:1              |
+| 大きいテキスト（18px+） | 3:1                |
+| UI コンポーネント       | 3:1                |
 
 ### タッチターゲット
 
@@ -519,12 +599,14 @@ export default {
 ### フォーカスインジケーター
 
 ```html
-<button class="
+<button
+  class="
   focus:outline-none
   focus-visible:ring-2
   focus-visible:ring-primary
   focus-visible:ring-offset-2
-">
+"
+>
   Button
 </button>
 ```
@@ -538,18 +620,18 @@ export default {
 ```css
 @media (prefers-color-scheme: dark) {
   :root {
-    --md-primary: #D0BCFF;
-    --md-on-primary: #381E72;
-    --md-primary-container: #4F378B;
-    --md-on-primary-container: #EADDFF;
+    --md-primary: #d0bcff;
+    --md-on-primary: #381e72;
+    --md-primary-container: #4f378b;
+    --md-on-primary-container: #eaddff;
 
     --md-surface: #141218;
-    --md-on-surface: #E6E0E9;
-    --md-surface-variant: #49454F;
-    --md-on-surface-variant: #CAC4D0;
+    --md-on-surface: #e6e0e9;
+    --md-surface-variant: #49454f;
+    --md-on-surface-variant: #cac4d0;
 
-    --md-outline: #938F99;
-    --md-outline-variant: #49454F;
+    --md-outline: #938f99;
+    --md-outline-variant: #49454f;
   }
 }
 ```
@@ -557,10 +639,12 @@ export default {
 ### Tailwind dark: プレフィックス
 
 ```html
-<div class="
+<div
+  class="
   bg-surface dark:bg-surface-dark
   text-on-surface dark:text-on-surface-dark
-">
+"
+>
   Content
 </div>
 ```

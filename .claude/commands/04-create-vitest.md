@@ -17,119 +17,119 @@ description: "Vitest のベストプラクティスに基づいたテストフ�
 ### 基本的なユニットテスト
 
 ```typescript
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 // テスト対象をインポート（__tests__/ から親ディレクトリを参照）
-import { targetFunction } from '../target'
+import { targetFunction } from "../target";
 
-describe('targetFunction', () => {
+describe("targetFunction", () => {
   // セットアップとクリーンアップ
   beforeEach(() => {
     // 各テスト前の準備
-  })
+  });
 
   afterEach(() => {
     // 各テスト後のクリーンアップ
-  })
+  });
 
-  it('should return expected result', () => {
+  it("should return expected result", () => {
     // Arrange（準備）
-    const input = 'test'
+    const input = "test";
 
     // Act（実行）
-    const result = targetFunction(input)
+    const result = targetFunction(input);
 
     // Assert（検証）
-    expect(result).toBe('expected')
-  })
+    expect(result).toBe("expected");
+  });
 
-  it('should handle edge case: null input', () => {
-    expect(() => targetFunction(null)).toThrow()
-  })
+  it("should handle edge case: null input", () => {
+    expect(() => targetFunction(null)).toThrow();
+  });
 
-  it('should handle edge case: empty string', () => {
-    expect(targetFunction('')).toBe('')
-  })
-})
+  it("should handle edge case: empty string", () => {
+    expect(targetFunction("")).toBe("");
+  });
+});
 ```
 
 ### モックを使用したテスト
 
 ```typescript
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { serviceFunction } from '../service'
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { serviceFunction } from "../service";
 
 // モジュール全体をモック（vi.mockはファイル先頭に巻き上げられる）
-vi.mock('../dependency', () => ({
+vi.mock("../dependency", () => ({
   dependencyFunction: vi.fn(),
-}))
+}));
 
 // モックをインポート（vi.mockの後にインポート）
-import { dependencyFunction } from '../dependency'
+import { dependencyFunction } from "../dependency";
 
-describe('serviceFunction', () => {
+describe("serviceFunction", () => {
   beforeEach(() => {
     // 各テスト前にモックをリセット
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+  });
 
-  it('should call dependency with correct args', async () => {
+  it("should call dependency with correct args", async () => {
     // モックの戻り値を設定
-    vi.mocked(dependencyFunction).mockResolvedValue({ data: 'mocked' })
+    vi.mocked(dependencyFunction).mockResolvedValue({ data: "mocked" });
 
-    const result = await serviceFunction('input')
+    const result = await serviceFunction("input");
 
     // モックが正しく呼ばれたか検証
-    expect(dependencyFunction).toHaveBeenCalledWith('input')
-    expect(dependencyFunction).toHaveBeenCalledTimes(1)
-    expect(result).toEqual({ data: 'mocked' })
-  })
-})
+    expect(dependencyFunction).toHaveBeenCalledWith("input");
+    expect(dependencyFunction).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({ data: "mocked" });
+  });
+});
 ```
 
 ### 環境変数のモック
 
 ```typescript
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-describe('環境変数を使用する関数', () => {
+describe("環境変数を使用する関数", () => {
   beforeEach(() => {
     // vi.stubEnvを使用（process.envを直接変更しない）
-    vi.stubEnv('NODE_ENV', 'test')
-    vi.stubEnv('API_URL', 'https://test.example.com')
-  })
+    vi.stubEnv("NODE_ENV", "test");
+    vi.stubEnv("API_URL", "https://test.example.com");
+  });
 
   afterEach(() => {
     // 環境変数のスタブを解除
-    vi.unstubAllEnvs()
-  })
+    vi.unstubAllEnvs();
+  });
 
-  it('should use mocked env', () => {
-    expect(process.env.NODE_ENV).toBe('test')
-  })
-})
+  it("should use mocked env", () => {
+    expect(process.env.NODE_ENV).toBe("test");
+  });
+});
 ```
 
 ### 日時のモック
 
 ```typescript
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-describe('日時に依存する関数', () => {
+describe("日時に依存する関数", () => {
   beforeEach(() => {
     // 時間を固定
-    vi.useFakeTimers()
-    vi.setSystemTime(new Date('2025-01-01T00:00:00.000Z'))
-  })
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2025-01-01T00:00:00.000Z"));
+  });
 
   afterEach(() => {
     // 実際の時間に戻す
-    vi.useRealTimers()
-  })
+    vi.useRealTimers();
+  });
 
-  it('should return fixed date', () => {
-    expect(new Date().toISOString()).toBe('2025-01-01T00:00:00.000Z')
-  })
-})
+  it("should return fixed date", () => {
+    expect(new Date().toISOString()).toBe("2025-01-01T00:00:00.000Z");
+  });
+});
 ```
 
 ### React コンポーネントテスト（React Testing Library）
@@ -166,28 +166,33 @@ describe('Button', () => {
 ## ベストプラクティス
 
 ### 1. テスト構造
+
 - `describe` ブロックでテストをグループ化
 - `it`/`test` で個別のテストケースを記述
 - AAA パターン（Arrange-Act-Assert）に従う
 
 ### 2. モックの扱い
+
 - **重要**: 各テスト間でモック状態をクリア（`mockReset: true` または `vi.clearAllMocks()`）
 - `vi.mock()` はファイル先頭に自動巻き上げされる
 - `vi.mocked()` で TypeScript の型推論を活用
 - `vi.stubEnv()` で環境変数をモック（`process.env` を直接変更しない）
 
 ### 3. エッジケースのテスト
+
 - null/undefined の入力
 - 空文字列、空配列
 - 境界値（最小値、最大値）
 - エラーケース
 
 ### 4. 非推奨パターン
+
 - 実装の詳細に依存したテスト（脆いテスト）
 - テスト間の依存関係
 - ハードコードされたタイムアウト
 
 ### 5. コンポーネントテスト
+
 - 実装詳細ではなく、ユーザー行動をテスト
 - `getByRole`, `getByText` など意味のあるセレクタを使用
 - `data-testid` は最後の手段として

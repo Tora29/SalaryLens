@@ -69,7 +69,12 @@ describe("SummaryCard", () => {
   it("正常系: trend のみで trendValue がない場合、トレンド表示がない", () => {
     // Arrange & Act
     render(
-      <SummaryCard title="合計収入" value="¥3,600,000" icon={Wallet} trend="up" />
+      <SummaryCard
+        title="合計収入"
+        value="¥3,600,000"
+        icon={Wallet}
+        trend="up"
+      />
     );
 
     // Assert

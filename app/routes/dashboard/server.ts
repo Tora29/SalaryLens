@@ -1,5 +1,8 @@
+import { data } from "react-router";
+import { z } from "zod";
 import { prisma } from "~/shared/lib/db.server";
 import type { LoaderData, SalaryRecord } from "./schema";
+import { salaryRecordSchema } from "./schema";
 import { calculateSummary, getRecentRecords } from "./service";
 
 /**
@@ -10,19 +13,16 @@ async function fetchSalaryRecords(): Promise<SalaryRecord[]> {
     orderBy: [{ year: "asc" }, { month: "asc" }],
   });
 
-  return records.map((record) => ({
-    id: record.id,
-    year: record.year,
-    month: record.month,
-    baseSalary: record.baseSalary,
-    overtime: record.overtime,
-    bonus: record.bonus,
-    deductions: record.deductions,
-    netSalary: record.netSalary,
-    fixedOvertimeHours: record.fixedOvertimeHours,
-    extraOvertimeHours: record.extraOvertimeHours,
-    over60OvertimeHours: record.over60OvertimeHours,
-  }));
+  // zodでバリデーション（スキーマ不一致を検知）
+  const result = z.array(salaryRecordSchema).safeParse(records);
+  if (!result.success) {
+    // eslint-disable-next-line no-console -- エラーログは開発時のデバッグに必要
+    console.error("Validation failed:", result.error.issues);
+    // eslint-disable-next-line @typescript-eslint/only-throw-error -- React Router の data() は意図的に throw する
+    throw data("データ形式が不正です", { status: 500 });
+  }
+
+  return result.data;
 }
 
 /**

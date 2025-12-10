@@ -10,6 +10,7 @@ This guide helps you create well-structured, effective skills for Claude Code th
 ## When to Use This Skill
 
 Use this skill when:
+
 - Creating a new skill from scratch
 - Updating an existing skill
 - Learning about skill structure and best practices
@@ -56,7 +57,6 @@ Every skill MUST have a `SKILL.md` file with YAML frontmatter:
 name: skill-identifier
 description: Brief description of what this skill does and when to use it
 ---
-
 # Skill Name
 
 [Your skill content here]
@@ -95,7 +95,7 @@ description: This skill handles database migrations and schema changes
 
 Follow this recommended structure:
 
-```markdown
+````markdown
 ---
 name: my-skill-name
 description: [What it does and when to use it]
@@ -108,6 +108,7 @@ Brief introduction explaining the skill's purpose.
 ## When to Use This Skill
 
 Explicitly list scenarios:
+
 - Use case 1
 - Use case 2
 - Use case 3
@@ -133,6 +134,7 @@ Show concrete, practical examples:
 ```[language]
 [code or content example]
 ```
+````
 
 ### Example 2: [Another Scenario]
 
@@ -162,11 +164,13 @@ Common issues and solutions:
 Specific guidance for Claude on how to use this skill:
 
 When invoked, you should:
+
 1. [Instruction 1]
 2. [Instruction 2]
 3. [Instruction 3]
 
 Always/Never:
+
 - Always do X
 - Never do Y
 
@@ -174,7 +178,8 @@ Always/Never:
 
 - [Link to documentation]
 - [Link to related tools]
-```
+
+````
 
 ## Optional: Tool Restrictions
 
@@ -186,9 +191,10 @@ name: safe-file-reader
 description: Safely read and analyze files without making modifications
 allowed-tools: Read, Grep, Glob
 ---
-```
+````
 
 This restricts Claude to only specified tools, useful for:
+
 - Read-only operations
 - Safety-critical workflows
 - Preventing accidental modifications
@@ -222,11 +228,13 @@ Use this [template](templates/template1.txt) as a starting point.
 ### 1. Keep Skills Focused
 
 **✅ DO**: One skill = one capability
+
 - `api-docs-writer`: Generate API documentation
 - `test-strategy`: Implement comprehensive tests
 - `db-migration`: Handle database schema changes
 
 **❌ DON'T**: Create broad, multi-purpose skills
+
 - `developer-helper`: Does everything (too vague)
 - `backend-tools`: Mixed unrelated capabilities
 
@@ -246,7 +254,7 @@ description: Helps with API documentation
 
 Users and Claude learn best from examples:
 
-```markdown
+````markdown
 ## Example: Creating a REST API Endpoint
 
 ```typescript
@@ -268,7 +276,9 @@ paths:
           schema:
             type: string
 ```
-```
+````
+
+````
 
 ### 4. Be Explicit About Workflow
 
@@ -293,7 +303,7 @@ Never:
 - Skip validation steps
 - Generate code without examples
 - Assume user preferences
-```
+````
 
 ### 5. Test Your Skills
 
@@ -309,12 +319,14 @@ After creating a skill, test it:
 Skills consume context tokens when activated. Write efficiently:
 
 **✅ DO**:
+
 - Assume Claude's base knowledge (don't explain programming basics)
 - Include only task-specific context
 - Keep SKILL.md under 500 lines
 - Use reference files for extensive documentation
 
 **❌ DON'T**:
+
 - Explain concepts Claude already knows
 - Include unnecessary background information
 - Create monolithic skill files
@@ -334,6 +346,7 @@ Test your skill with all models you plan to support.
 For complex skills with extensive documentation:
 
 **Structure**:
+
 ```
 my-skill-name/
 ├── SKILL.md              # Core instructions (< 500 lines)
@@ -343,6 +356,7 @@ my-skill-name/
 ```
 
 **In SKILL.md, reference other files**:
+
 ```markdown
 For detailed API reference, see [reference.md](reference.md).
 More examples available in [examples.md](examples.md).
@@ -355,6 +369,7 @@ Claude will only load these files when needed, saving context tokens.
 **Checklisted Workflows**: Include ordered steps Claude can track progress through
 
 **Pre-written Scripts**: For deterministic operations, provide ready-to-use scripts rather than having Claude generate them
+
 - More reliable
 - Saves tokens
 - Faster execution
@@ -362,23 +377,27 @@ Claude will only load these files when needed, saving context tokens.
 **Choose the Right Language**:
 
 Use **Shell Scripts (.sh)** for:
+
 - Simple, single-purpose operations
 - File handling and command chaining
 - Logging, notifications, quick validation
 - Operations with minimal logic (5 lines or less)
 
 Use **Python Scripts (.py)** for:
+
 - Complex logic and conditional operations
 - Data processing and transformation
 - Cross-platform compatibility (especially if Windows users exist)
 - Reusable modules and libraries
 
 **Cross-Platform Considerations**:
+
 - Shell scripts require WSL/Git Bash on Windows
 - Python offers better cross-platform support for team-shared skills
 - Use POSIX-compliant commands if you choose shell scripts
 
 **Example**:
+
 ```bash
 scripts/
 ├── setup.sh          # Shell: Simple environment setup
@@ -388,6 +407,7 @@ scripts/
 ```
 
 Reference from SKILL.md:
+
 ```markdown
 Run validation: `python scripts/validate.py`
 Run setup: `bash scripts/setup.sh`
@@ -552,7 +572,7 @@ When creating a skill, ensure:
 
 ## Example: Complete Skill Template
 
-```markdown
+````markdown
 ---
 name: example-skill
 description: [What this does] and [specific use case]. Use when [trigger scenario 1], [trigger scenario 2], or [working with keyword1, keyword2].
@@ -585,6 +605,7 @@ Explain the underlying approach or methodology.
 ```typescript
 // Code example here
 ```
+````
 
 ### Example 2: Advanced Use Case
 
@@ -618,6 +639,7 @@ When this skill is activated:
 
 - [Documentation link]
 - [Tool link]
+
 ```
 
 ---
@@ -631,3 +653,4 @@ When this skill is activated:
 5. **Iterate Based on Feedback**: Skills improve with real-world usage—update accordingly
 6. **Consider Performance**: Every token in your skill uses context window space
 7. **Write for Autonomous Use**: Claude should be able to use the skill without asking clarifying questions
+```

@@ -99,13 +99,13 @@ export async function action({ request }: Route.ActionArgs) {
 
 ## 役割分担
 
-| 用途 | 使う型 |
-|------|--------|
-| loaderData の型 | React Router +types（自動推論） |
-| actionData の型 | React Router +types（自動推論） |
-| 子コンポーネントの props | +types から抽出 |
-| action のバリデーション | zod スキーマ |
-| サービス関数の引数 | zod から推論した型 |
+| 用途                     | 使う型                          |
+| ------------------------ | ------------------------------- |
+| loaderData の型          | React Router +types（自動推論） |
+| actionData の型          | React Router +types（自動推論） |
+| 子コンポーネントの props | +types から抽出                 |
+| action のバリデーション  | zod スキーマ                    |
+| サービス関数の引数       | zod から推論した型              |
 
 ---
 

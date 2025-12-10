@@ -1,20 +1,25 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { SalaryRecord } from "../../../../prisma/generated/prisma/client";
 import { getDashboardData } from "../server";
+
+// モック関数をホイストして作成（vi.mock より先に評価される）
+const { mockFindMany } = vi.hoisted(() => ({
+  mockFindMany: vi.fn<() => Promise<SalaryRecord[]>>(),
+}));
 
 // Prisma クライアントをモック
 vi.mock("~/shared/lib/db.server", () => ({
   prisma: {
     salaryRecord: {
-      findMany: vi.fn(),
+      findMany: mockFindMany,
     },
   },
 }));
 
-// モック後にインポート
-import { prisma } from "~/shared/lib/db.server";
-
 // テスト用の DB レコード作成ヘルパー
-const createDbRecord = (overrides: Partial<ReturnType<typeof createDbRecord>> = {}) => ({
+const createDbRecord = (
+  overrides: Partial<SalaryRecord> = {}
+): SalaryRecord => ({
   id: "test-id",
   year: 2025,
   month: 1,
@@ -43,13 +48,13 @@ describe("getDashboardData", () => {
       createDbRecord({ id: "2", month: 2, netSalary: 350000, bonus: 100000 }),
       createDbRecord({ id: "3", month: 3, netSalary: 320000, bonus: 0 }),
     ];
-    vi.mocked(prisma.salaryRecord.findMany).mockResolvedValue(mockDbRecords);
+    mockFindMany.mockResolvedValue(mockDbRecords);
 
     // Act
     const result = await getDashboardData();
 
     // Assert
-    expect(prisma.salaryRecord.findMany).toHaveBeenCalledWith({
+    expect(mockFindMany).toHaveBeenCalledWith({
       orderBy: [{ year: "asc" }, { month: "asc" }],
     });
 
@@ -67,7 +72,7 @@ describe("getDashboardData", () => {
 
   it("正常系: 空のデータベースの場合は空の結果を返す", async () => {
     // Arrange
-    vi.mocked(prisma.salaryRecord.findMany).mockResolvedValue([]);
+    mockFindMany.mockResolvedValue([]);
 
     // Act
     const result = await getDashboardData();
@@ -84,7 +89,7 @@ describe("getDashboardData", () => {
     const mockDbRecords = Array.from({ length: 10 }, (_, i) =>
       createDbRecord({ id: `${i + 1}`, month: i + 1 })
     );
-    vi.mocked(prisma.salaryRecord.findMany).mockResolvedValue(mockDbRecords);
+    mockFindMany.mockResolvedValue(mockDbRecords);
 
     // Act
     const result = await getDashboardData();
@@ -96,11 +101,20 @@ describe("getDashboardData", () => {
 
   it("異常系: DB エラーが発生した場合は例外をスローする", async () => {
     // Arrange
-    vi.mocked(prisma.salaryRecord.findMany).mockRejectedValue(
-      new Error("Database connection failed")
-    );
+    mockFindMany.mockRejectedValue(new Error("Database connection failed"));
 
     // Act & Assert
-    await expect(getDashboardData()).rejects.toThrow("Database connection failed");
+    await expect(getDashboardData()).rejects.toThrow(
+      "Database connection failed"
+    );
+  });
+
+  it("異常系: zod バリデーション失敗時はエラーをスローする", async () => {
+    // Arrange: 不正なデータ（month: 13 は schema で max(12) 違反）
+    const invalidRecord = createDbRecord({ month: 13 });
+    mockFindMany.mockResolvedValue([invalidRecord]);
+
+    // Act & Assert
+    await expect(getDashboardData()).rejects.toBeDefined();
   });
 });
