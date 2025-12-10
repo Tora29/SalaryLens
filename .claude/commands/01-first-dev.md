@@ -1,3 +1,8 @@
+---
+allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash(npm run:*), Bash(npx prisma:*)
+description: "React Router v7でルートを新規作成します"
+---
+
 # Custom Command: Scaffold Feature (React Router v7)
 
 あなたは経験豊富なシニアフロントエンドエンジニアです。

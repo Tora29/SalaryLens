@@ -1,6 +1,11 @@
+---
+allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
+description: "ルートファイルのロジックをservice/server/schemaに分割します"
+---
+
 # Custom Command: Refactor to Service Layer
 
-指定されたルートファイル (`routes/{name}/route.tsx`) 内のビジネスロジックを、コロケーションパターンに従ってサービスファイル (`server.ts`) とスキーマファイル (`schema.ts`) に切り出してください。
+指定されたルートファイル (`routes/{name}/route.tsx`) 内のロジックを、コロケーションパターンに従って `server.ts`、`service.ts`、`schema.ts` に切り出してください。
 
 ## リファクタリング手順
 
@@ -34,15 +39,52 @@ export type UpdateEntityInput = z.infer<typeof updateEntitySchema>;
 ```
 
 ### 2. サービスファイルの作成
-- ルートファイルと同じディレクトリに `server.ts` ファイルを作成してください（例: `routes/{name}/route.tsx` → `routes/{name}/server.ts`）。
-- 型はスキーマファイルからインポートしてください。
-- 以下の処理をサービス関数として切り出してください：
-  - DB操作 (Prisma等)
-  - 外部API呼び出し
-  - 複雑なデータ加工ロジック
+- ルートファイルと同じディレクトリに `service.ts` ファイルを作成してください。
+- **純粋関数**としてビジネスロジックを実装してください（DBや外部APIに依存しない）。
+- テスト容易性を確保するため、副作用を持たない関数として設計してください。
 
-### 3. ルートファイルの修正
-- スキーマとサービス関数をインポートして呼び出すだけの「コントローラー」に修正してください。
+```typescript
+import type { Entity, SummaryData } from "./schema";
+
+// 集計・計算ロジック
+export function calculateSummary(records: Entity[]): SummaryData {
+  // ...
+}
+
+// データ変換・フィルタリングロジック
+export function filterActiveRecords(records: Entity[]): Entity[] {
+  // ...
+}
+```
+
+### 3. サーバーファイルの作成
+- ルートファイルと同じディレクトリに `server.ts` ファイルを作成してください。
+- **DBアクセス**や**外部API呼び出し**などの副作用を持つ処理を実装してください。
+- `service.ts` の関数を呼び出してデータを組み立ててください。
+
+```typescript
+import { prisma } from "~/shared/lib/db.server";
+import type { Entity, LoaderData } from "./schema";
+import { calculateSummary } from "./service";
+
+// DBアクセス
+async function fetchEntities(): Promise<Entity[]> {
+  const records = await prisma.entity.findMany();
+  return records.map((r) => ({ /* 変換 */ }));
+}
+
+// ローダー用データ取得
+export async function getLoaderData(): Promise<LoaderData> {
+  const entities = await fetchEntities();
+  return {
+    summary: calculateSummary(entities),
+    entities,
+  };
+}
+```
+
+### 4. ルートファイルの修正
+- スキーマとサーバー関数をインポートして呼び出すだけの「コントローラー」に修正してください。
 - `action` 内のバリデーションは `safeParse` を使用してください：
 
 ```typescript
@@ -63,13 +105,15 @@ await serviceFunction(result.data);
 app/routes/
   {name}/
     route.tsx        # ルート（コントローラー）
-    server.ts        # サービス（ビジネスロジック）
+    server.ts        # DBアクセス・外部API呼び出し
+    service.ts       # ビジネスロジック（純粋関数）
     schema.ts        # Zodスキーマ + 型定義
 ```
 
 ## 注意点
 - 既存の機能が壊れないように、引数と戻り値の型整合性を保ってください。
-- 切り出した関数は、純粋な関数（Pure Function）または副作用が明確な関数として設計してください。
+- `service.ts` の関数は純粋関数として設計し、DBモックなしでテスト可能にしてください。
+- `server.ts` の関数は副作用が明確な関数として設計してください。
 
 ---
 ## 実行手順

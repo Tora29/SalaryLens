@@ -1,3 +1,8 @@
+---
+allowed-tools: Read, Glob, Grep, Bash(git:*), Bash(gh:*)
+description: "mainブランチから変更を分析してPRを作成します"
+---
+
 # Custom Command: Create Pull Request
 
 mainブランチから現在の変更を分析し、適切なブランチ名でPRを作成してください。

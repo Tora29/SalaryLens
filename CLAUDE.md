@@ -27,3 +27,4 @@
 - アイコンルール: `.claude/rules/icon-usage.md`
 - バリデーションルール: `.claude/rules/validation.md`
 - コメントルール: ソースコード上のコメントは日本語で記述する
+- 実装後は必ず`npm run lint`, `npm run format` を並行実行し確認を行う
