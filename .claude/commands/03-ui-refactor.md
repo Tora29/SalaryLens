@@ -1,3 +1,8 @@
+---
+allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
+description: "UIコンポーネントを分割してリファクタリングします"
+---
+
 # Custom Command: Refactor UI Components
 
 指定されたルートファイル内のJSX（UI部分）が肥大化しているため、可読性を高めるためにコンポーネント分割を行ってください。
