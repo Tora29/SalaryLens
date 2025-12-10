@@ -22,7 +22,7 @@
 
 ## 実装ルール
 - 型ルール: `.claude/rules/type-management.md`
-- デザインルール: `.claude/rules/tailwind-layout.md`
+- デザインルール: `.claude/skills/material-design/SKILL.md`
 - Web標準ルール: `.claude/rules/web-standards.md`
 - アイコンルール: `.claude/rules/icon-usage.md`
 - バリデーションルール: `.claude/rules/validation.md`
