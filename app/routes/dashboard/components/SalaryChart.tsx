@@ -15,7 +15,20 @@ type Props = {
   data: SalaryRecord[];
 };
 
-const MONTHS = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+const MONTHS = [
+  "1月",
+  "2月",
+  "3月",
+  "4月",
+  "5月",
+  "6月",
+  "7月",
+  "8月",
+  "9月",
+  "10月",
+  "11月",
+  "12月",
+];
 
 // Recharts用にデータを変換
 function transformChartData(data: SalaryRecord[]) {
@@ -48,7 +61,9 @@ export function SalaryChart({ data }: Props) {
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">月別給与推移</h2>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
+        月別給与推移
+      </h2>
       <ResponsiveContainer width="100%" height={280}>
         <ComposedChart data={chartData}>
           {/* 横線（ReferenceLineで明示的に描画） */}
@@ -98,11 +113,27 @@ export function SalaryChart({ data }: Props) {
             }}
           />
           <Legend
-            formatter={(value) => <span className="text-sm text-gray-600">{value}</span>}
+            formatter={(value) => (
+              <span className="text-sm text-gray-600">{value}</span>
+            )}
           />
           {/* 給与バー */}
-          <Bar yAxisId="salary" dataKey="baseNet" stackId="salary" fill="#6366f1" name="手取り" radius={[0, 0, 0, 0]} />
-          <Bar yAxisId="salary" dataKey="bonusNet" stackId="salary" fill="#c7d2fe" name="賞与" radius={[4, 4, 0, 0]} />
+          <Bar
+            yAxisId="salary"
+            dataKey="baseNet"
+            stackId="salary"
+            fill="#6366f1"
+            name="手取り"
+            radius={[0, 0, 0, 0]}
+          />
+          <Bar
+            yAxisId="salary"
+            dataKey="bonusNet"
+            stackId="salary"
+            fill="#c7d2fe"
+            name="賞与"
+            radius={[4, 4, 0, 0]}
+          />
           {/* 残業時間の折れ線（点線） */}
           <Line
             yAxisId="hours"

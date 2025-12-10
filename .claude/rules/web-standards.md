@@ -39,12 +39,12 @@ const [isCreateOpen, setIsCreateOpen] = useState(false);
 
 ### URL 状態管理のメリット
 
-| メリット | 説明 |
-|----------|------|
-| ブックマーク可能 | 同じ URL なら同じ画面が表示される |
-| 共有可能 | URL を送れば相手も同じ状態を見られる |
-| 履歴が正しく動作 | 戻る/進むボタンが期待通りに動く |
-| SSR と親和性が高い | サーバーで状態を再現できる |
+| メリット           | 説明                                 |
+| ------------------ | ------------------------------------ |
+| ブックマーク可能   | 同じ URL なら同じ画面が表示される    |
+| 共有可能           | URL を送れば相手も同じ状態を見られる |
+| 履歴が正しく動作   | 戻る/進むボタンが期待通りに動く      |
+| SSR と親和性が高い | サーバーで状態を再現できる           |
 
 ---
 
@@ -119,7 +119,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 // Bad - useEffect でデータ取得
 useEffect(() => {
-  fetch("/api/items").then(res => res.json()).then(setItems);
+  fetch("/api/items")
+    .then((res) => res.json())
+    .then(setItems);
 }, []);
 ```
 
@@ -159,14 +161,14 @@ JavaScript が無効でも基本機能が動作するように設計する。
 
 ## URL パラメータの命名規則
 
-| 用途 | パラメータ名 | 例 |
-|------|-------------|-----|
-| 検索 | `search`, `q` | `?search=todo` |
-| モーダル | `modal` | `?modal=create` |
-| 編集対象 | `edit` | `?edit=abc123` |
-| ページネーション | `page`, `limit` | `?page=2&limit=20` |
-| ソート | `sort`, `order` | `?sort=createdAt&order=desc` |
-| フィルタ | `filter`, `status` | `?status=completed` |
+| 用途             | パラメータ名       | 例                           |
+| ---------------- | ------------------ | ---------------------------- |
+| 検索             | `search`, `q`      | `?search=todo`               |
+| モーダル         | `modal`            | `?modal=create`              |
+| 編集対象         | `edit`             | `?edit=abc123`               |
+| ページネーション | `page`, `limit`    | `?page=2&limit=20`           |
+| ソート           | `sort`, `order`    | `?sort=createdAt&order=desc` |
+| フィルタ         | `filter`, `status` | `?status=completed`          |
 
 ---
 

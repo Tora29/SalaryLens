@@ -8,13 +8,23 @@ type Props = {
   trendValue?: string;
 };
 
-export function SummaryCard({ title, value, icon: Icon, trend, trendValue }: Props) {
+export function SummaryCard({
+  title,
+  value,
+  icon: Icon,
+  trend,
+  trendValue,
+}: Props) {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
-          <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mt-2">{value}</p>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            {title}
+          </p>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mt-2">
+            {value}
+          </p>
           {trend && trendValue && (
             <div className="flex items-center gap-1 mt-2">
               {trend === "up" ? (
