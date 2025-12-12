@@ -9,10 +9,10 @@ import {
   Legend,
   ReferenceLine,
 } from "recharts";
-import type { SalaryRecord } from "../schema";
+import type { MonthlySalary } from "../route";
 
 type Props = {
-  data: SalaryRecord[];
+  data: MonthlySalary[];
 };
 
 const MONTHS = [
@@ -30,18 +30,21 @@ const MONTHS = [
   "12月",
 ];
 
+// 分を時間に変換
+function minutesToHours(minutes: number): number {
+  return Math.round((minutes / 60) * 10) / 10;
+}
+
 // Recharts用にデータを変換
-function transformChartData(data: SalaryRecord[]) {
+function transformChartData(data: MonthlySalary[]) {
   return data.map((record, index) => ({
     month: MONTHS[index],
-    // 賞与なしの手取り相当
-    baseNet: Math.round(record.netSalary - record.bonus * 0.8),
-    // 賞与の手取り相当（控除後）
-    bonusNet: Math.round(record.bonus * 0.8),
-    // 残業時間
-    fixedOvertimeHours: record.fixedOvertimeHours,
-    extraOvertimeHours: record.extraOvertimeHours,
-    over60OvertimeHours: record.over60OvertimeHours,
+    // 手取り
+    netSalary: record.netSalary,
+    // 残業時間（分から時間に変換）
+    extraOvertimeHours: minutesToHours(record.extraOvertimeMinutes),
+    over60OvertimeHours: minutesToHours(record.over60OvertimeMinutes),
+    nightOvertimeHours: minutesToHours(record.nightOvertimeMinutes),
   }));
 }
 
@@ -120,31 +123,12 @@ export function SalaryChart({ data }: Props) {
           {/* 給与バー */}
           <Bar
             yAxisId="salary"
-            dataKey="baseNet"
-            stackId="salary"
+            dataKey="netSalary"
             fill="#6366f1"
             name="手取り"
-            radius={[0, 0, 0, 0]}
-          />
-          <Bar
-            yAxisId="salary"
-            dataKey="bonusNet"
-            stackId="salary"
-            fill="#c7d2fe"
-            name="賞与"
             radius={[4, 4, 0, 0]}
           />
           {/* 残業時間の折れ線（点線） */}
-          <Line
-            yAxisId="hours"
-            type="linear"
-            dataKey="fixedOvertimeHours"
-            stroke="#10b981"
-            strokeWidth={2}
-            strokeDasharray="5 5"
-            dot={{ fill: "#10b981", r: 3 }}
-            name="固定残業(~45h)"
-          />
           <Line
             yAxisId="hours"
             type="linear"
@@ -153,7 +137,7 @@ export function SalaryChart({ data }: Props) {
             strokeWidth={2}
             strokeDasharray="5 5"
             dot={{ fill: "#f59e0b", r: 3 }}
-            name="固定外残業(45-60h)"
+            name="固定外残業"
           />
           <Line
             yAxisId="hours"
@@ -164,6 +148,16 @@ export function SalaryChart({ data }: Props) {
             strokeDasharray="5 5"
             dot={{ fill: "#ef4444", r: 3 }}
             name="60h超残業"
+          />
+          <Line
+            yAxisId="hours"
+            type="linear"
+            dataKey="nightOvertimeHours"
+            stroke="#8b5cf6"
+            strokeWidth={2}
+            strokeDasharray="5 5"
+            dot={{ fill: "#8b5cf6", r: 3 }}
+            name="深夜残業"
           />
         </ComposedChart>
       </ResponsiveContainer>

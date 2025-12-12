@@ -1,36 +1,59 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { SalaryRecord } from "../../../../prisma/generated/prisma/client";
+import type { Salary } from "../../../../prisma/generated/prisma/client";
+import { Decimal } from "../../../../prisma/generated/prisma/internal/prismaNamespace";
 import { getDashboardData } from "../server";
 
 // モック関数をホイストして作成（vi.mock より先に評価される）
 const { mockFindMany } = vi.hoisted(() => ({
-  mockFindMany: vi.fn<() => Promise<SalaryRecord[]>>(),
+  mockFindMany: vi.fn<() => Promise<Salary[]>>(),
 }));
 
 // Prisma クライアントをモック
 vi.mock("~/shared/lib/db.server", () => ({
   prisma: {
-    salaryRecord: {
+    salary: {
       findMany: mockFindMany,
     },
   },
 }));
 
 // テスト用の DB レコード作成ヘルパー
-const createDbRecord = (
-  overrides: Partial<SalaryRecord> = {}
-): SalaryRecord => ({
+const createDbRecord = (overrides: Partial<Salary> = {}): Salary => ({
   id: "test-id",
   year: 2025,
   month: 1,
+
+  // 勤怠
+  extraOvertimeMinutes: 900,
+  over60OvertimeMinutes: 0,
+  nightOvertimeMinutes: 0,
+  paidLeaveDays: new Decimal(1.0),
+  paidLeaveRemainingDays: new Decimal(10.0),
+
+  // 支給
   baseSalary: 300000,
-  overtime: 50000,
-  bonus: 0,
-  deductions: 50000,
-  netSalary: 300000,
-  fixedOvertimeHours: 20,
-  extraOvertimeHours: 5,
-  over60OvertimeHours: 0,
+  fixedOvertimeAllowance: 100000,
+  overtimeAllowance: 30000,
+  over60OvertimeAllowance: 0,
+  nightAllowance: 0,
+  specialAllowance: 10000,
+  expenseReimbursement: 0,
+  commuteAllowance: 10000,
+  stockIncentive: 0,
+  totalEarnings: 450000,
+
+  // 控除
+  healthInsurance: 20000,
+  pensionInsurance: 40000,
+  employmentInsurance: 3000,
+  residentTax: 15000,
+  incomeTax: 30000,
+  stockContribution: 0,
+  totalDeductions: 108000,
+
+  // 差引支給額
+  netSalary: 342000,
+
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,
@@ -44,9 +67,24 @@ describe("getDashboardData", () => {
   it("正常系: DB から取得したデータをダッシュボード用に変換できる", async () => {
     // Arrange
     const mockDbRecords = [
-      createDbRecord({ id: "1", month: 1, netSalary: 300000, bonus: 0 }),
-      createDbRecord({ id: "2", month: 2, netSalary: 350000, bonus: 100000 }),
-      createDbRecord({ id: "3", month: 3, netSalary: 320000, bonus: 0 }),
+      createDbRecord({
+        id: "1",
+        month: 1,
+        netSalary: 300000,
+        totalEarnings: 450000,
+      }),
+      createDbRecord({
+        id: "2",
+        month: 2,
+        netSalary: 350000,
+        totalEarnings: 500000,
+      }),
+      createDbRecord({
+        id: "3",
+        month: 3,
+        netSalary: 320000,
+        totalEarnings: 470000,
+      }),
     ];
     mockFindMany.mockResolvedValue(mockDbRecords);
 
@@ -60,7 +98,7 @@ describe("getDashboardData", () => {
 
     // サマリーの検証
     expect(result.summary.totalNetSalary).toBe(970000);
-    expect(result.summary.totalBonus).toBe(100000);
+    expect(result.summary.totalEarnings).toBe(1420000);
 
     // 月別給与の検証
     expect(result.monthlySalaries).toHaveLength(3);

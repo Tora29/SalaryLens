@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Glob, Grep, Write, Edit, Bash(npm install:*), Bash(npx vitest:*)
+allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Bash(npm install:*), Bash(npx vitest:*)
 description: "Vitest のベストプラクティスに基づいたテストファイルを作成します"
 ---
 
@@ -199,8 +199,9 @@ describe('Button', () => {
 
 ## 実行指示
 
-1. **テスト対象ファイルを特定**
-   - ユーザーから指定されたファイル、または会話の文脈から推測
+1. **テスト対象ファイルを質問**
+   - AskUserQuestion ツールを使ってユーザーに「テスト対象のファイルを入力してください（例: app/routes/dashboard/service.ts）」と質問してください。
+   - ユーザーから回答を得てから、以降の手順に進んでください。
 
 2. **テストファイルの配置を決定**
    - コロケーション方式: テスト対象ディレクトリ内の `__tests__/` フォルダに配置

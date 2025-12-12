@@ -157,6 +157,18 @@ app/routes/
     schema.ts        # Zodスキーマ + 型定義
 ```
 
+## 依存関係のルール
+
+```
+route.tsx → server.ts → service.ts → db.server.ts
+    ↓           ↓            ↓
+  UI層      loader/action  ビジネスロジック
+```
+
+- `route.tsx` は `server.ts` のみをインポートする（`service.ts` を直接インポートしない）
+- `server.ts` は `service.ts` と `schema.ts` をインポートする
+- `service.ts` は `schema.ts` のみをインポートする（純粋関数を保つため）
+
 ## 注意点
 
 - 既存の機能が壊れないように、引数と戻り値の型整合性を保ってください。

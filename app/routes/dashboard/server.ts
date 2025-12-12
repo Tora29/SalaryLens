@@ -9,12 +9,19 @@ import { calculateSummary, getRecentRecords } from "./service";
  * DBから給与レコードを取得する
  */
 async function fetchSalaryRecords(): Promise<SalaryRecord[]> {
-  const records = await prisma.salaryRecord.findMany({
+  const records = await prisma.salary.findMany({
     orderBy: [{ year: "asc" }, { month: "asc" }],
   });
 
+  // Decimal型をnumber型に変換
+  const convertedRecords = records.map((record) => ({
+    ...record,
+    paidLeaveDays: Number(record.paidLeaveDays),
+    paidLeaveRemainingDays: Number(record.paidLeaveRemainingDays),
+  }));
+
   // zodでバリデーション（スキーマ不一致を検知）
-  const result = z.array(salaryRecordSchema).safeParse(records);
+  const result = z.array(salaryRecordSchema).safeParse(convertedRecords);
   if (!result.success) {
     // eslint-disable-next-line no-console -- エラーログは開発時のデバッグに必要
     console.error("Validation failed:", result.error.issues);

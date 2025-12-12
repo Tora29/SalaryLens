@@ -1,0 +1,43 @@
+// 給与記録
+model Salary {
+  // ========== 主キー ==========
+  id        String   @id @default(cuid()) @map("id") // 主キー
+  year      Int @map("year") // 年
+  month     Int @map("month") // 月
+  createdAt DateTime @default(now()) @map("created_at") @base.Timestamptz // 作成日時
+  updatedAt DateTime @updatedAt @map("updated_at") @base.Timestamptz // 更新日時
+
+  // ========== 勤怠 ==========
+  extraOvertimeMinutes   Int     @map("extra_overtime_minutes") // 固定外残業時間（分）
+  over60OvertimeMinutes  Int     @map("over_60_overtime_minutes") // 固定外残業時間 60h超（分）
+  nightOvertimeMinutes   Int     @map("night_overtime_minutes") // 深夜割増時間（分）
+  paidLeaveDays          Decimal @map("paid_leave_days") @base.Decimal(3, 1) // 有休日数
+  paidLeaveRemainingDays Decimal @map("paid_leave_remaining_days") @base.Decimal(4, 1) // 有休残日数
+
+  // ========== 支給 ==========
+  baseSalary              Int @map("base_salary") // 基本給
+  fixedOvertimeAllowance  Int @map("fixed_overtime_allowance") // 固定時間外手当
+  overtimeAllowance       Int @map("overtime_allowance") // 残業手当
+  over60OvertimeAllowance Int @map("over_60_overtime_allowance") // 残業手当(60時間超)
+  nightAllowance          Int @map("night_allowance") // 深夜割増額
+  specialAllowance        Int @map("special_allowance") // 特別手当
+  expenseReimbursement    Int @map("expense_reimbursement") // 立替経費
+  commuteAllowance        Int @map("commute_allowance") // 非課税通勤費
+  stockIncentive          Int @map("stock_incentive") // 持株会奨励金
+  totalEarnings           Int @map("total_earnings") // 支給合計
+
+  // ========== 控除 ==========
+  healthInsurance     Int @map("health_insurance") // 健康保険料
+  pensionInsurance    Int @map("pension_insurance") // 厚生年金保険
+  employmentInsurance Int @map("employment_insurance") // 雇用保険料
+  residentTax         Int @map("resident_tax") // 住民税
+  incomeTax           Int @map("income_tax") // 所得税
+  stockContribution   Int @map("stock_contribution") // 持株会拠出金
+  totalDeductions     Int @map("total_deductions") // 控除合計
+
+  // ========== 差引 ==========
+  netSalary Int @map("net_salary") // 差引支給額
+
+  @@unique([year, month])
+  @@map("salaries")
+}

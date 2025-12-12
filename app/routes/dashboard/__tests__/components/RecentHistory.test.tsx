@@ -10,14 +10,38 @@ const createMockRecord = (
   id: "test-id",
   year: 2025,
   month: 1,
+
+  // 勤怠
+  extraOvertimeMinutes: 900,
+  over60OvertimeMinutes: 0,
+  nightOvertimeMinutes: 0,
+  paidLeaveDays: 1.0,
+  paidLeaveRemainingDays: 10.0,
+
+  // 支給
   baseSalary: 300000,
-  overtime: 50000,
-  bonus: 0,
-  deductions: 50000,
-  netSalary: 300000,
-  fixedOvertimeHours: 20,
-  extraOvertimeHours: 5,
-  over60OvertimeHours: 0,
+  fixedOvertimeAllowance: 100000,
+  overtimeAllowance: 30000,
+  over60OvertimeAllowance: 0,
+  nightAllowance: 0,
+  specialAllowance: 10000,
+  expenseReimbursement: 0,
+  commuteAllowance: 10000,
+  stockIncentive: 0,
+  totalEarnings: 450000,
+
+  // 控除
+  healthInsurance: 20000,
+  pensionInsurance: 40000,
+  employmentInsurance: 3000,
+  residentTax: 15000,
+  incomeTax: 30000,
+  stockContribution: 0,
+  totalDeductions: 108000,
+
+  // 差引支給額
+  netSalary: 342000,
+
   ...overrides,
 });
 
@@ -55,8 +79,8 @@ describe("RecentHistory", () => {
     expect(screen.getByText("期間")).toBeInTheDocument();
     expect(screen.getByText("基本給")).toBeInTheDocument();
     expect(screen.getByText("残業代")).toBeInTheDocument();
-    expect(screen.getByText("賞与")).toBeInTheDocument();
-    expect(screen.getByText("控除")).toBeInTheDocument();
+    expect(screen.getByText("支給合計")).toBeInTheDocument();
+    expect(screen.getByText("控除合計")).toBeInTheDocument();
     expect(screen.getByText("手取り")).toBeInTheDocument();
   });
 
@@ -68,10 +92,12 @@ describe("RecentHistory", () => {
         year: 2025,
         month: 3,
         baseSalary: 300000,
-        overtime: 50000,
-        bonus: 100000,
-        deductions: 80000,
-        netSalary: 370000,
+        overtimeAllowance: 30000,
+        over60OvertimeAllowance: 10000,
+        nightAllowance: 10000,
+        totalEarnings: 500000,
+        totalDeductions: 80000,
+        netSalary: 420000,
       }),
     ];
 
@@ -81,29 +107,10 @@ describe("RecentHistory", () => {
     // Assert
     expect(screen.getByText("2025年 3月")).toBeInTheDocument();
     expect(screen.getByText("￥300,000")).toBeInTheDocument(); // 基本給
-    expect(screen.getByText("￥50,000")).toBeInTheDocument(); // 残業代
-    expect(screen.getByText("￥100,000")).toBeInTheDocument(); // 賞与
-    expect(screen.getByText("-￥80,000")).toBeInTheDocument(); // 控除
-    expect(screen.getByText("￥370,000")).toBeInTheDocument(); // 手取り
-  });
-
-  it("正常系: 賞与が0の場合は'-'を表示する", () => {
-    // Arrange
-    const records: SalaryRecord[] = [
-      createMockRecord({
-        id: "1",
-        bonus: 0,
-      }),
-    ];
-
-    // Act
-    render(<RecentHistory records={records} />);
-
-    // Assert: 賞与列に'-'が表示される
-    const cells = screen.getAllByRole("cell");
-    // 賞与セル（4番目）に'-'があることを確認
-    const bonusCell = cells.find((cell) => cell.textContent === "-");
-    expect(bonusCell).toBeInTheDocument();
+    expect(screen.getByText("￥50,000")).toBeInTheDocument(); // 残業代（30000 + 10000 + 10000）
+    expect(screen.getByText("￥500,000")).toBeInTheDocument(); // 支給合計
+    expect(screen.getByText("-￥80,000")).toBeInTheDocument(); // 控除合計
+    expect(screen.getByText("￥420,000")).toBeInTheDocument(); // 手取り
   });
 
   it("正常系: 複数のレコードを表示できる", () => {
