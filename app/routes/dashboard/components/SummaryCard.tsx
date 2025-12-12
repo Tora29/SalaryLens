@@ -44,7 +44,10 @@ export function SummaryCard({
           )}
         </div>
         <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
-          <Icon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+          <Icon
+            className="w-6 h-6 text-indigo-600 dark:text-indigo-400"
+            aria-hidden="true"
+          />
         </div>
       </div>
     </div>

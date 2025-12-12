@@ -21,14 +21,38 @@ const createMockRecord = (
   id: "test-id",
   year: 2025,
   month: 1,
+
+  // 勤怠
+  extraOvertimeMinutes: 900,
+  over60OvertimeMinutes: 0,
+  nightOvertimeMinutes: 0,
+  paidLeaveDays: 1.0,
+  paidLeaveRemainingDays: 10.0,
+
+  // 支給
   baseSalary: 300000,
-  overtime: 50000,
-  bonus: 0,
-  deductions: 50000,
-  netSalary: 300000,
-  fixedOvertimeHours: 20,
-  extraOvertimeHours: 5,
-  over60OvertimeHours: 0,
+  fixedOvertimeAllowance: 100000,
+  overtimeAllowance: 30000,
+  over60OvertimeAllowance: 0,
+  nightAllowance: 0,
+  specialAllowance: 10000,
+  expenseReimbursement: 0,
+  commuteAllowance: 10000,
+  stockIncentive: 0,
+  totalEarnings: 450000,
+
+  // 控除
+  healthInsurance: 20000,
+  pensionInsurance: 40000,
+  employmentInsurance: 3000,
+  residentTax: 15000,
+  incomeTax: 30000,
+  stockContribution: 0,
+  totalDeductions: 108000,
+
+  // 差引支給額
+  netSalary: 342000,
+
   ...overrides,
 });
 

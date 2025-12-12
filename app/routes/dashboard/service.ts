@@ -7,14 +7,19 @@ export function calculateSummary(records: SalaryRecord[]): SummaryData {
   const totalNetSalary = records.reduce((sum, r) => sum + r.netSalary, 0);
   const averageNetSalary =
     records.length > 0 ? Math.floor(totalNetSalary / records.length) : 0;
-  const totalBonus = records.reduce((sum, r) => sum + r.bonus, 0);
+  const totalEarnings = records.reduce((sum, r) => sum + r.totalEarnings, 0);
+  const totalDeductions = records.reduce(
+    (sum, r) => sum + r.totalDeductions,
+    0
+  );
   // 前年比は仮の値（将来的に前年データと比較）
   const yearOverYearChange = 3.5;
 
   return {
     totalNetSalary,
     averageNetSalary,
-    totalBonus,
+    totalEarnings,
+    totalDeductions,
     yearOverYearChange,
   };
 }

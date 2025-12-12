@@ -26,6 +26,9 @@ React Router v7 のベストプラクティスに基づき、指定された機�
 4. **型安全性:**
    - `Route.ComponentProps`, `Route.LoaderArgs`, `Route.ActionArgs` などの型定義ヘルパーを使用してください。
 
+5. **デザイン**
+   - `.claude/skills/material-design/SKILL.md` を使用してM3 仕様でデザインすること
+
 ## 出力要件
 
 - 実装する機能の要件に基づき、完全な `.tsx` コードを出力してください。

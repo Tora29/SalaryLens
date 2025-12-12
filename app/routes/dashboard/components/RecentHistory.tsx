@@ -1,9 +1,9 @@
 import { Calendar, ArrowUpRight } from "lucide-react";
-import type { SalaryRecord } from "../schema";
-import { formatCurrency } from "../utils";
+import type { MonthlySalary } from "../route";
+import { formatCurrency } from "~/shared/utils/format";
 
 type Props = {
-  records: SalaryRecord[];
+  records: MonthlySalary[];
 };
 
 const MONTHS = [
@@ -22,6 +22,15 @@ const MONTHS = [
   "12月",
 ];
 
+// 総残業手当を計算する
+function getTotalOvertimeAllowance(record: MonthlySalary): number {
+  return (
+    record.overtimeAllowance +
+    record.over60OvertimeAllowance +
+    record.nightAllowance
+  );
+}
+
 export function RecentHistory({ records }: Props) {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
@@ -31,7 +40,7 @@ export function RecentHistory({ records }: Props) {
         </h2>
         <button className="flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
           すべて表示
-          <ArrowUpRight className="w-4 h-4" />
+          <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
       <div className="overflow-x-auto">
@@ -48,10 +57,10 @@ export function RecentHistory({ records }: Props) {
                 残業代
               </th>
               <th className="text-right py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">
-                賞与
+                支給合計
               </th>
               <th className="text-right py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">
-                控除
+                控除合計
               </th>
               <th className="text-right py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">
                 手取り
@@ -66,7 +75,10 @@ export function RecentHistory({ records }: Props) {
               >
                 <td className="py-4 px-4">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-gray-400" />
+                    <Calendar
+                      className="w-4 h-4 text-gray-400"
+                      aria-hidden="true"
+                    />
                     <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       {record.year}年 {MONTHS[record.month]}
                     </span>
@@ -76,19 +88,15 @@ export function RecentHistory({ records }: Props) {
                   {formatCurrency(record.baseSalary)}
                 </td>
                 <td className="py-4 px-4 text-right text-sm text-gray-700 dark:text-gray-300">
-                  {formatCurrency(record.overtime)}
+                  {formatCurrency(getTotalOvertimeAllowance(record))}
                 </td>
                 <td className="py-4 px-4 text-right text-sm text-gray-700 dark:text-gray-300">
-                  {record.bonus > 0 ? (
-                    <span className="text-indigo-600 dark:text-indigo-400 font-medium">
-                      {formatCurrency(record.bonus)}
-                    </span>
-                  ) : (
-                    "-"
-                  )}
+                  <span className="text-indigo-600 dark:text-indigo-400 font-medium">
+                    {formatCurrency(record.totalEarnings)}
+                  </span>
                 </td>
                 <td className="py-4 px-4 text-right text-sm text-red-500">
-                  -{formatCurrency(record.deductions)}
+                  -{formatCurrency(record.totalDeductions)}
                 </td>
                 <td className="py-4 px-4 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">
                   {formatCurrency(record.netSalary)}

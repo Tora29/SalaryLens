@@ -1,8 +1,12 @@
 import { isRouteErrorResponse } from "react-router";
 import type { Route } from "./+types/route";
 import { TrendingUp, Wallet, Calendar, Banknote } from "lucide-react";
+
+// 子コンポーネント用の型エクスポート（+types から抽出）
+export type MonthlySalary =
+  Route.ComponentProps["loaderData"]["monthlySalaries"][number];
 import { getDashboardData } from "./server";
-import { formatCurrency } from "./utils";
+import { formatCurrency } from "~/shared/utils/format";
 import { SummaryCard } from "./components/SummaryCard";
 import { SalaryChart } from "./components/SalaryChart";
 import { RecentHistory } from "./components/RecentHistory";
@@ -42,8 +46,8 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             icon={Banknote}
           />
           <SummaryCard
-            title="年間賞与合計"
-            value={formatCurrency(summary.totalBonus)}
+            title="年間控除合計"
+            value={formatCurrency(summary.totalDeductions)}
             icon={TrendingUp}
           />
           <SummaryCard

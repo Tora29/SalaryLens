@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -9,12 +9,13 @@ import {
   useLoaderData,
 } from "react-router";
 
-import { Moon, Sun } from "lucide-react";
-
 import type { Route } from "./+types/root";
 import "./app.css";
-
-type Theme = "light" | "dark";
+import { MobileHeader } from "./shared/layout/sidebar/components";
+import { Sidebar } from "./shared/layout/sidebar/Sidebar";
+import type { Theme } from "./shared/layout/sidebar/schema";
+import { getActiveNavigationItems } from "./shared/layout/sidebar/server";
+import { mapNavigationItemsWithIcons } from "./shared/layout/sidebar/service";
 
 // Cookie からテーマを取得
 function getThemeFromCookie(cookieHeader: string | null): Theme {
@@ -23,10 +24,11 @@ function getThemeFromCookie(cookieHeader: string | null): Theme {
   return (match?.[1] as Theme) ?? "light";
 }
 
-export function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const cookieHeader = request.headers.get("Cookie");
   const theme = getThemeFromCookie(cookieHeader);
-  return { theme };
+  const navigationItems = await getActiveNavigationItems();
+  return { theme, navigationItems };
 }
 
 export const links: Route.LinksFunction = () => [
@@ -42,44 +44,16 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-// テーマ切り替えボタンコンポーネント
-function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
-  const [theme, setTheme] = useState<Theme>(initialTheme);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-
-    // Cookie に保存
-    document.cookie = `theme=${nextTheme}; Path=/; SameSite=Lax; Max-Age=31536000`;
-
-    // html 要素の class を更新
-    if (nextTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={toggleTheme}
-      className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-    >
-      {theme === "dark" ? (
-        <Sun className="w-5 h-5 text-yellow-400" />
-      ) : (
-        <Moon className="w-5 h-5 text-gray-700" />
-      )}
-    </button>
-  );
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData<typeof loader>();
   const initialTheme = data?.theme ?? "light";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // ナビゲーション項目にアイコンをマッピング（クライアント側で実行）
+  const navigationItemsWithIcons = useMemo(
+    () => mapNavigationItemsWithIcons(data?.navigationItems ?? []),
+    [data?.navigationItems]
+  );
 
   return (
     <html lang="ja">
@@ -105,11 +79,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
           }}
         />
       </head>
-      <body>
-        <header className="fixed top-4 right-4 z-50">
-          <ThemeToggle initialTheme={initialTheme} />
-        </header>
-        {children}
+      <body className="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+        {/* モバイルヘッダー */}
+        <MobileHeader onMenuClick={() => setSidebarOpen(true)} />
+
+        {/* サイドバー */}
+        <Sidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          initialTheme={initialTheme}
+          navigationItems={navigationItemsWithIcons}
+        />
+
+        {/* メインコンテンツ */}
+        <main className="pt-16 lg:pt-0 lg:pl-72 min-h-screen">
+          <div className="p-4 lg:p-6">{children}</div>
+        </main>
+
         <ScrollRestoration />
         <Scripts />
       </body>

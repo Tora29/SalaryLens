@@ -1,0 +1,13 @@
+// ナビゲーション項目マスタ
+model Navigation {
+  id        String   @id @default(cuid())
+  path      String   @unique // リンク先パス（例: "/", "/payslips/upload"）
+  label     String // 表示ラベル（例: "ダッシュボード"）
+  iconName  String   @map("icon_name") // アイコン名（例: "LayoutDashboard"）
+  sortOrder Int      @map("sort_order") // 表示順
+  isActive  Boolean  @default(true) @map("is_active") // 有効/無効フラグ
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("navigations")
+}
