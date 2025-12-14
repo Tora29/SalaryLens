@@ -152,7 +152,14 @@ describe("getDashboardData", () => {
     const invalidRecord = createDbRecord({ month: 13 });
     mockFindMany.mockResolvedValue([invalidRecord]);
 
+    // console.error の出力を抑制（テスト対象の意図的なエラー）
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
     // Act & Assert
     await expect(getDashboardData()).rejects.toBeDefined();
+
+    // 実際にエラーログが呼ばれたことを確認
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
   });
 });

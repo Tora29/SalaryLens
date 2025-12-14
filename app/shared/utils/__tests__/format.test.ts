@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatCurrency } from "~/shared/utils/format";
+import { formatCurrency } from "../format";
 
 describe("formatCurrency", () => {
   it("正常系: 正の金額を日本円形式でフォーマットできる", () => {
