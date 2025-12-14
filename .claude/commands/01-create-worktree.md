@@ -55,7 +55,7 @@ git worktree list
 
 3. Claude 起動後、/01-first-dev から開発を開始
 
-開発完了後は /07-end-dev でクリーンアップできます。
+開発完了後は /09-end-dev でクリーンアップできます。
 ```
 
 ## 注意事項
