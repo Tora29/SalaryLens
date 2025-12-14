@@ -57,14 +57,6 @@ git worktree list
    git branch -a
 ```
 
-### 4. 自動クリーンアップ（オプション）
-
-ユーザーが「自動で実行して」と言った場合は、AskUserQuestion で確認後、メインリポジトリから実行するコマンドをまとめて提示してください：
-
-```bash
-cd ../SalaryLens && git worktree remove {worktreeパス} && git branch -d {ブランチ名}
-```
-
 ## 注意事項
 
 - worktree 内から自分自身を削除することはできない
