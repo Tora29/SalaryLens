@@ -4,10 +4,8 @@ import { ThemeToggle } from "../../components/ThemeToggle";
 
 describe("ThemeToggle", () => {
   let originalCookie: string;
-  let mockClassList: {
-    add: ReturnType<typeof vi.fn>;
-    remove: ReturnType<typeof vi.fn>;
-  };
+  let mockAdd: ReturnType<typeof vi.fn<(...args: string[]) => void>>;
+  let mockRemove: ReturnType<typeof vi.fn<(...args: string[]) => void>>;
 
   beforeEach(() => {
     // Cookie をモック
@@ -18,15 +16,13 @@ describe("ThemeToggle", () => {
     });
 
     // classList をモック
-    mockClassList = {
-      add: vi.fn(),
-      remove: vi.fn(),
-    };
+    mockAdd = vi.fn<(...args: string[]) => void>();
+    mockRemove = vi.fn<(...args: string[]) => void>();
     vi.spyOn(document.documentElement.classList, "add").mockImplementation(
-      mockClassList.add
+      mockAdd
     );
     vi.spyOn(document.documentElement.classList, "remove").mockImplementation(
-      mockClassList.remove
+      mockRemove
     );
   });
 
@@ -65,7 +61,7 @@ describe("ThemeToggle", () => {
     fireEvent.click(button);
 
     expect(document.cookie).toContain("theme=dark");
-    expect(mockClassList.add).toHaveBeenCalledWith("dark");
+    expect(mockAdd).toHaveBeenCalledWith("dark");
   });
 
   it("dark から light へ切り替えるとき Cookie を設定し classList から dark を削除する", () => {
@@ -75,7 +71,7 @@ describe("ThemeToggle", () => {
     fireEvent.click(button);
 
     expect(document.cookie).toContain("theme=light");
-    expect(mockClassList.remove).toHaveBeenCalledWith("dark");
+    expect(mockRemove).toHaveBeenCalledWith("dark");
   });
 
   it("テーマを2回切り替えると元に戻る", () => {

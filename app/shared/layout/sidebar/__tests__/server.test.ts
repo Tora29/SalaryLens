@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { Navigation } from "../../../../prisma/generated/prisma/client";
+import type { Navigation } from "../../../../../prisma/generated/prisma/client";
 import { getActiveNavigationItems, getAllNavigationItems } from "../server";
 
 // モック関数をホイストして作成
