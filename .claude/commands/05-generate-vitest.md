@@ -10,7 +10,51 @@ description: "Vitest のベストプラクティスに基づいたテストフ�
 - **単体テスト**: `[module].test.ts` または `[module].spec.ts`
 - **コンポーネントテスト**: `[Component].test.tsx`
 - **統合テスト**: `[feature].integration.test.ts`
-- **E2Eテスト**: `[feature].e2e.test.ts`
+
+## テストファイル配置ルール
+
+テストはコロケーション方式で、テスト対象ファイルと同じディレクトリの `__tests__/` フォルダに配置する。
+
+### ルート固有のコード
+
+```
+app/routes/dashboard/
+├── __tests__/
+│   ├── server.test.ts       # server.ts のテスト
+│   ├── service.test.ts      # service.ts のテスト
+│   └── components/
+│       └── SummaryCard.test.tsx
+├── server.ts
+├── service.ts
+└── components/
+    └── SummaryCard.tsx
+```
+
+### 共有モジュール
+
+**重要**: 共有モジュール（`app/shared/`）のテストは、そのモジュールのディレクトリ内に配置する。ルートの `__tests__/` に配置しない。
+
+```
+app/shared/
+├── utils/
+│   ├── __tests__/
+│   │   └── format.test.ts   # format.ts のテスト
+│   └── format.ts
+├── lib/
+│   ├── __tests__/
+│   │   └── db.server.test.ts
+│   └── db.server.ts
+└── components/
+    ├── __tests__/
+    │   └── Button.test.tsx
+    └── Button.tsx
+```
+
+**理由**:
+
+- テスト対象との関連性が明確になる
+- 共有モジュールの変更時に影響範囲を把握しやすい
+- ルート固有のテストと混同しない
 
 ## テストファイルテンプレート
 
@@ -163,6 +207,62 @@ describe('Button', () => {
 })
 ```
 
+### React Router v7 ルートコンポーネントテスト
+
+React Router v7 の自動生成型（`Route.ComponentProps`, `Route.ErrorBoundaryProps`）では、`loaderData` だけでなく `params` と `matches` も必須プロパティとなる。テストではヘルパー関数を作成してこれらをモックする。
+
+```typescript
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import Dashboard, { ErrorBoundary } from "../route";
+import type { Route } from "../+types/route";
+
+// テスト用のヘルパー：loaderData のみを受け取り、必須の params と matches をモックする
+function createMockComponentProps(
+  loaderData: Route.ComponentProps["loaderData"]
+): Route.ComponentProps {
+  return {
+    loaderData,
+    params: {},
+    matches: [] as unknown as Route.ComponentProps["matches"],
+  };
+}
+
+// ErrorBoundary 用のヘルパー
+function createMockErrorBoundaryProps(
+  error: unknown
+): Route.ErrorBoundaryProps {
+  return {
+    error,
+    params: {},
+  };
+}
+
+describe("Dashboard", () => {
+  it("should render header", () => {
+    const mockLoaderData = {
+      summary: { /* ... */ },
+      monthlySalaries: [],
+      recentRecords: [],
+    };
+
+    render(<Dashboard {...createMockComponentProps(mockLoaderData)} />);
+
+    expect(screen.getByText("ダッシュボード")).toBeInTheDocument();
+  });
+});
+
+describe("ErrorBoundary", () => {
+  it("should display error message", () => {
+    const error = new Error("Something went wrong");
+
+    render(<ErrorBoundary {...createMockErrorBoundaryProps(error)} />);
+
+    expect(screen.getByText("エラー")).toBeInTheDocument();
+  });
+});
+```
+
 ## ベストプラクティス
 
 ### 1. テスト構造
@@ -191,7 +291,25 @@ describe('Button', () => {
 - テスト間の依存関係
 - ハードコードされたタイムアウト
 
-### 5. コンポーネントテスト
+### 5. console.error の抑制
+
+テストで意図的にエラーを発生させる場合、`console.error` の出力を抑制して stderr を汚さない。
+
+```typescript
+it("異常系: バリデーション失敗時はエラーをスローする", async () => {
+  // console.error の出力を抑制（テスト対象の意図的なエラー）
+  const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+  // Act & Assert
+  await expect(functionThatLogs()).rejects.toBeDefined();
+
+  // 実際にエラーログが呼ばれたことを確認
+  expect(consoleSpy).toHaveBeenCalled();
+  consoleSpy.mockRestore();
+});
+```
+
+### 6. コンポーネントテスト
 
 - 実装詳細ではなく、ユーザー行動をテスト
 - `getByRole`, `getByText` など意味のあるセレクタを使用
