@@ -34,25 +34,21 @@ const renderWithRouter = (ui: React.ReactElement) => {
 
 describe("Sidebar", () => {
   let originalOverflow: string;
-  let mockClassList: {
-    add: ReturnType<typeof vi.fn>;
-    remove: ReturnType<typeof vi.fn>;
-  };
+  let mockAdd: ReturnType<typeof vi.fn<(...args: string[]) => void>>;
+  let mockRemove: ReturnType<typeof vi.fn<(...args: string[]) => void>>;
 
   beforeEach(() => {
     // body.style.overflow を保存
     originalOverflow = document.body.style.overflow;
 
     // classList をモック（ThemeToggle 用）
-    mockClassList = {
-      add: vi.fn(),
-      remove: vi.fn(),
-    };
+    mockAdd = vi.fn<(...args: string[]) => void>();
+    mockRemove = vi.fn<(...args: string[]) => void>();
     vi.spyOn(document.documentElement.classList, "add").mockImplementation(
-      mockClassList.add
+      mockAdd
     );
     vi.spyOn(document.documentElement.classList, "remove").mockImplementation(
-      mockClassList.remove
+      mockRemove
     );
   });
 
