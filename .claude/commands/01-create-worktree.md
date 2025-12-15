@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git:*), AskUserQuestion
+allowed-tools: Bash(git:*), Bash(cp:*), Bash(npm:*), Bash(docker:*), Bash(npx:*), AskUserQuestion
 description: "git worktreeを作成して並行開発環境を準備します"
 ---
 
@@ -37,12 +37,40 @@ git worktree add -b feat/payslips ../SalaryLens-payslips
 git worktree list
 ```
 
-### 4. ユーザーへの案内
+### 4. 環境構築
+
+新しい worktree ディレクトリで以下のコマンドを順番に実行してください：
+
+#### 4.1 環境変数ファイルのコピー
+
+```bash
+cp .env ../SalaryLens-{機能名}/.env
+```
+
+#### 4.2 依存パッケージのインストール
+
+```bash
+npm install --prefix ../SalaryLens-{機能名}
+```
+
+#### 4.3 データベースの起動確認
+
+```bash
+docker compose -f ../SalaryLens-{機能名}/docker-compose.yml up -d
+```
+
+#### 4.4 Prisma Client の生成とスキーマ同期
+
+```bash
+npx --prefix ../SalaryLens-{機能名} prisma db push
+```
+
+### 5. ユーザーへの案内
 
 以下の形式で案内を出力してください：
 
 ```
-✅ Worktree を作成しました
+✅ Worktree を作成し、環境構築が完了しました
 
 📁 ディレクトリ: ../SalaryLens-{機能名}
 🌿 ブランチ: feat/{機能名}
@@ -53,7 +81,7 @@ git worktree list
 
    cd ../SalaryLens-{機能名} && claude
 
-3. Claude 起動後、/01-first-dev から開発を開始
+3. 開発を開始
 
 開発完了後は /09-end-dev でクリーンアップできます。
 ```
