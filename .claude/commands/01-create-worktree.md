@@ -62,8 +62,10 @@ docker compose -f ../SalaryLens-{機能名}/docker-compose.yml up -d
 #### 4.4 Prisma Client の生成とスキーマ同期
 
 ```bash
-npx --prefix ../SalaryLens-{機能名} prisma db push
+cd ../SalaryLens-{機能名} && npx prisma db push
 ```
+
+※ `npx` には `--prefix` オプションがないため、ディレクトリ移動が必要です。
 
 ### 5. ユーザーへの案内
 

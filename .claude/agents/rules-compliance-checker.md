@@ -28,6 +28,19 @@ color: blue
 検証結果は以下の形式で報告してください：
 
 ```
+## チェックしたルール
+`.claude/rules/` 配下で実際に検出したすべてのルールファイルを列挙すること（以下は例）：
+- [x] type-management.md
+- [x] validation.md
+- [x] layer-dependencies.md
+- [x] web-standards.md
+- [x] icon-usage.md
+- [x] component-reuse.md
+- [x] import-order.md
+
+※ 上記は例であり、実行時に検出したファイルをすべて列挙すること
+検出ルールファイル数: [数]
+
 ## 検証結果サマリー
 - 検証対象: [ディレクトリパス]
 - 検証ファイル数: [数]

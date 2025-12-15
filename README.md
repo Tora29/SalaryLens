@@ -19,7 +19,8 @@ app/routes/{feature}/
 ├── route.tsx          # ルート（loader/action/UI）
 ├── server.ts          # DBアクセス・外部API
 ├── service.ts         # ビジネスロジック（純粋関数）
-├── schema.ts          # Zodスキーマ + 型定義
+├── schema.ts          # Zodスキーマ + ドメイン型
+├── types.ts           # 子コンポーネントのProps型（必要な場合）
 ├── components/        # 機能固有のUIコンポーネント
 │   └── FeatureCard.tsx
 └── __tests__/         # テスト

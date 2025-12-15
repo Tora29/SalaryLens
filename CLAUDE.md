@@ -43,6 +43,7 @@
 - アイコンルール: `.claude/rules/icon-usage.md`
 - バリデーションルール: `.claude/rules/validation.md`
 - コンポーネント再利用ルール: `.claude/rules/component-reuse.md`
+- import整理ルール: `.claude/rules/import-order.md`
 - コメントルール: ソースコード上のコメントは日本語で記述する
 - 事実と推論を分けること
 - 公式ドキュメントのリンクを示すこと
