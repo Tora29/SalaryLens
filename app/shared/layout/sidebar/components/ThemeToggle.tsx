@@ -1,8 +1,11 @@
+// React・ライブラリ
 import { useState } from "react";
-
 import { Moon, Sun } from "lucide-react";
 
+// 型定義
 import type { Theme } from "../schema";
+
+// サービス
 import { getNextTheme, createThemeCookieValue } from "../service";
 
 interface ThemeToggleProps {

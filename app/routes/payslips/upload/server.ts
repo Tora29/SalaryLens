@@ -1,14 +1,21 @@
-import { prisma } from "~/shared/lib/db.server";
+// 型定義
 import type { ActionData, PayslipData, PayslipFormData } from "./schema";
+
+// サーバー・ロジック
 import { payslipSchema } from "./schema";
 import {
-  isAllowedFileType,
   createDefaultPayslipData,
   extractPayslipFromFormData,
+  isAllowedFileType,
   minutesToTimeString,
 } from "./service";
-import { formatNumberWithCommas } from "~/shared/utils/format";
 import { parsePdfPayslip } from "./util-pdf-parser.server";
+
+// 共有ライブラリ
+import { prisma } from "~/shared/lib/db.server";
+
+// 共有ユーティリティ
+import { formatNumberWithCommas } from "~/shared/utils/format";
 
 /**
  * PayslipData を確認画面用の PayslipFormData に変換する

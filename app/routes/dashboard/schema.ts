@@ -1,3 +1,4 @@
+// ライブラリ
 import { z } from "zod";
 
 // 給与記録スキーマ（Prismaスキーマと一致）

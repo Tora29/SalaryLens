@@ -1,5 +1,11 @@
-import { useState, useRef, useCallback, type RefObject } from "react";
-import { Upload, FileText, X } from "lucide-react";
+// React・ライブラリ
+import { useCallback, useRef, useState, type RefObject } from "react";
+import { FileText, Upload, X } from "lucide-react";
+
+// 型定義
+import type { FileDropzoneProps } from "./types";
+
+// ローカルスキーマ
 import { ALLOWED_FILE_TYPES } from "../schema";
 
 type FileDropzoneState = {
@@ -108,17 +114,6 @@ export function useFileDropzone(): UseFileDropzoneReturn {
   };
 }
 
-type Props = {
-  dragActive: boolean;
-  selectedFile: File | null;
-  previewUrl: string | null;
-  fileInputRef: RefObject<HTMLInputElement | null>;
-  onDrag: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClearFile: () => void;
-};
-
 /**
  * ファイルドラッグ&ドロップエリア
  * 画像のプレビュー表示に対応
@@ -132,7 +127,7 @@ export function FileDropzone({
   onDrop,
   onInputChange,
   onClearFile,
-}: Props) {
+}: FileDropzoneProps) {
   return (
     <div
       onDragEnter={onDrag}

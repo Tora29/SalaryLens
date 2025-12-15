@@ -1,10 +1,13 @@
+// React・ライブラリ
 import { useEffect } from "react";
-
 import { X } from "lucide-react";
 
+// 型定義
+import type { SidebarProps } from "./schema";
+
+// ローカルコンポーネント
 import { SidebarNavItem } from "./components/SidebarNavItem";
 import { ThemeToggle } from "./components/ThemeToggle";
-import type { SidebarProps } from "./schema";
 
 // サイドバーコンポーネント
 export function Sidebar({

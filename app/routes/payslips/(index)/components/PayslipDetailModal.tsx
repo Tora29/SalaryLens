@@ -1,12 +1,12 @@
 // 型定義
-import type { PayslipDetailModalProps } from "../types";
-
-// サーバー・ロジック
-import { formatMinutesToHoursAndMinutes } from "../service";
+import type { PayslipDetailModalProps } from "./types";
 
 // 共有コンポーネント
 import { Modal } from "~/shared/components/Modal";
-import { formatCurrency } from "~/shared/utils/format";
+import {
+  formatCurrency,
+  formatMinutesToHoursAndMinutes,
+} from "~/shared/utils/format";
 
 // ローカルコンポーネント
 import { DetailItem } from "./detail/DetailItem";

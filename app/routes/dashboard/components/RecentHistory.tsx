@@ -1,5 +1,10 @@
-import { Calendar, ArrowUpRight } from "lucide-react";
-import type { MonthlySalary } from "../route";
+// ライブラリ
+import { ArrowUpRight, Calendar } from "lucide-react";
+
+// 型定義
+import type { MonthlySalary } from "./types";
+
+// 共有ユーティリティ
 import { formatCurrency } from "~/shared/utils/format";
 
 type Props = {

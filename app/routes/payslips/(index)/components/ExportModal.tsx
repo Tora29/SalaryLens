@@ -4,7 +4,7 @@ import { ChevronDown, FileSpreadsheet } from "lucide-react";
 
 // 型定義
 import type { ExportRangeType } from "../schema";
-import type { ExportModalProps } from "../types";
+import type { ExportModalProps } from "./types";
 
 // サーバー・ロジック
 import {

@@ -1,5 +1,5 @@
 // 型定義
-import type { PayslipsTableProps } from "../types";
+import type { PayslipsTableProps } from "./types";
 
 // 共有コンポーネント
 import { formatCurrency } from "~/shared/utils/format";

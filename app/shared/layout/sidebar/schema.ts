@@ -1,5 +1,7 @@
+// 型定義
 import type { ComponentType } from "react";
 
+// ライブラリ
 import { z } from "zod";
 
 // テーマ

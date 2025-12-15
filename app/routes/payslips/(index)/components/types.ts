@@ -1,5 +1,5 @@
 // 型定義
-import type { ExportRangeType, SalaryRecord } from "./schema";
+import type { ExportRangeType, SalaryRecord } from "../schema";
 
 /** PageHeader コンポーネントの Props */
 export type PageHeaderProps = {

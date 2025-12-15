@@ -1,17 +1,18 @@
-import { Form } from "react-router";
+// React・ライブラリ
+import { Form, Link } from "react-router";
 import { Loader2 } from "lucide-react";
-import type { ActionData, PayslipFormData } from "../schema";
+
+// 型定義
+import type { PayslipFormData } from "../schema";
+import type { ConfirmationFormProps } from "./types";
+
+// ローカルスキーマ
 import { PAYSLIP_FIELDS } from "../schema";
+
+// 共有コンポーネント
+import { ErrorMessage } from "~/shared/components/ErrorMessage";
 import { FormSection } from "~/shared/components/FormSection";
 import { InputField } from "~/shared/components/InputField";
-import { ErrorMessage } from "~/shared/components/ErrorMessage";
-
-type Props = {
-  data: PayslipFormData;
-  fileName: string;
-  isSubmitting: boolean;
-  actionData: ActionData;
-};
 
 /**
  * 給与明細の確認・編集フォーム
@@ -22,7 +23,7 @@ export function ConfirmationForm({
   fileName,
   isSubmitting,
   actionData,
-}: Props) {
+}: ConfirmationFormProps) {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -130,12 +131,12 @@ export function ConfirmationForm({
                   "保存"
                 )}
               </button>
-              <a
-                href="/payslips/upload"
+              <Link
+                to="/payslips/upload"
                 className="min-h-12 px-4 py-2.5 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-medium tracking-wide hover:bg-indigo-600/8 active:bg-indigo-600/12 transition-colors flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
               >
                 キャンセル
-              </a>
+              </Link>
             </div>
           </div>
         </Form>

@@ -1,5 +1,7 @@
+// ライブラリ
 import { Menu } from "lucide-react";
 
+// 型定義
 import type { MobileHeaderProps } from "../schema";
 
 // ヘッダーコンポーネント（モバイル用）

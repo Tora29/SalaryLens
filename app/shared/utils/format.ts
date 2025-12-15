@@ -15,3 +15,12 @@ export function formatCurrency(amount: number): string {
 export function formatNumberWithCommas(num: number): string {
   return num.toLocaleString("ja-JP");
 }
+
+/**
+ * 分を「X時間Y分」形式にフォーマットする
+ */
+export function formatMinutesToHoursAndMinutes(totalMinutes: number): string {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}時間${minutes}分`;
+}

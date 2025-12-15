@@ -1,14 +1,15 @@
+// React・ライブラリ
+import { Link } from "react-router";
 import { Check } from "lucide-react";
 
-type Props = {
-  message: string;
-};
+// 型定義
+import type { SuccessCardProps } from "./types";
 
 /**
  * 保存成功時のカード表示
  * M3 Elevated Card と Primary Container を使用
  */
-export function SuccessCard({ message }: Props) {
+export function SuccessCard({ message }: SuccessCardProps) {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
@@ -26,19 +27,19 @@ export function SuccessCard({ message }: Props) {
           </p>
           <div className="flex gap-3 justify-center">
             {/* M3 Filled Button */}
-            <a
-              href="/payslips/upload"
+            <Link
+              to="/payslips/upload"
               className="min-h-12 px-6 py-2.5 bg-indigo-600 hover:shadow-md active:shadow-none text-white rounded-full text-sm font-medium tracking-wide transition-shadow flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
             >
               続けてアップロード
-            </a>
+            </Link>
             {/* M3 Outlined Button */}
-            <a
-              href="/"
+            <Link
+              to="/"
               className="min-h-12 px-6 py-2.5 border border-gray-400 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-medium tracking-wide hover:bg-indigo-600/8 active:bg-indigo-600/12 transition-colors flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
             >
               ダッシュボードへ
-            </a>
+            </Link>
           </div>
         </div>
       </div>

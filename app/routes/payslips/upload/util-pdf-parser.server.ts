@@ -1,8 +1,14 @@
+// ライブラリ
 import { PDFParse } from "pdf-parse";
+
+// 型定義
 import type { PayslipData } from "./schema";
+
+// ローカルスキーマ
 import { PDF_LABEL_MAPPINGS } from "./schema";
-import { timeStringToMinutes } from "./service";
-import { createDefaultPayslipData } from "./service";
+
+// ローカルサービス
+import { createDefaultPayslipData, timeStringToMinutes } from "./service";
 
 /**
  * PDFファイルからテキストを抽出する
