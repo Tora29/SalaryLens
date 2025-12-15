@@ -1,4 +1,5 @@
-import { TrendingUp, TrendingDown } from "lucide-react";
+// ライブラリ
+import { TrendingDown, TrendingUp } from "lucide-react";
 
 type Props = {
   title: string;

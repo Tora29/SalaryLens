@@ -1,12 +1,21 @@
+// React・ライブラリ
 import { Form, useActionData, useNavigation } from "react-router";
-import { Upload, Loader2 } from "lucide-react";
+import { Loader2, Upload } from "lucide-react";
+
+// 型定義
 import type { Route } from "./+types/route";
 import type { ActionData } from "./schema";
+
+// サーバー・ロジック
 import { handleFileUpload, handleSavePayslip } from "./server";
+
+// 共有コンポーネント
+import { ErrorMessage } from "~/shared/components/ErrorMessage";
+
+// ローカルコンポーネント
 import { ConfirmationForm } from "./components/ConfirmationForm";
 import { FileDropzone, useFileDropzone } from "./components/FileDropzone";
 import { SuccessCard } from "./components/SuccessCard";
-import { ErrorMessage } from "~/shared/components/ErrorMessage";
 
 export async function action({
   request,

@@ -1,3 +1,4 @@
+// ライブラリ
 import {
   LayoutDashboard,
   Upload,
@@ -8,6 +9,8 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
+
+// 型定義
 import type { NavigationItem, NavigationItemWithIcon, Theme } from "./schema";
 
 // アイコン名からアイコンコンポーネントへのマッピング

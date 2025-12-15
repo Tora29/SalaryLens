@@ -1,5 +1,7 @@
+// ライブラリ
 import { NavLink } from "react-router";
 
+// 型定義
 import type { NavigationItemWithIcon } from "../schema";
 
 interface SidebarNavItemProps {

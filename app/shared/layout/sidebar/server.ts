@@ -1,4 +1,7 @@
+// 共有ライブラリ
 import { prisma } from "~/shared/lib/db.server";
+
+// 型定義
 import type { NavigationItem } from "./schema";
 
 // 有効なナビゲーション項目を取得（sortOrder順）

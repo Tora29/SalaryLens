@@ -1,15 +1,18 @@
+// ライブラリ
 import {
-  ResponsiveContainer,
-  ComposedChart,
   Bar,
+  ComposedChart,
+  Legend,
   Line,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  Legend,
-  ReferenceLine,
 } from "recharts";
-import type { MonthlySalary } from "../route";
+
+// 型定義
+import type { MonthlySalary } from "./types";
 
 type Props = {
   data: MonthlySalary[];
@@ -57,7 +60,7 @@ function formatTooltip(value: number, name: string) {
 }
 
 const SALARY_TICKS = [0, 200000, 400000, 600000, 800000, 1000000];
-const HOURS_TICKS = [0, 20, 40, 60, 80, 100];
+const HOURS_TICKS = [0, 10, 20, 30, 40, 50];
 
 export function SalaryChart({ data }: Props) {
   const chartData = transformChartData(data);
@@ -103,7 +106,7 @@ export function SalaryChart({ data }: Props) {
             tick={{ fontSize: 12, fill: "#6b7280" }}
             axisLine={false}
             tickLine={false}
-            domain={[0, 100]}
+            domain={[0, 50]}
             ticks={HOURS_TICKS}
           />
           <Tooltip

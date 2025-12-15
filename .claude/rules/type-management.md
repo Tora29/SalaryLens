@@ -118,16 +118,21 @@ app/routes/
     server.ts       # DBアクセス・外部API
     service.ts      # ビジネスロジック（純粋関数）
     schema.ts       # Zodスキーマ + ドメイン型
-    types.ts        # 子コンポーネントのProps型（必要な場合）
+    components/
+      types.ts      # 子コンポーネントのProps型（必要な場合）
+      SomeComponent.tsx
 ```
 
 ### types.ts の役割
 
-子コンポーネントの Props 型が多い場合に分離する。
+子コンポーネントの Props 型が多い場合（3個以上）に `components/types.ts` に分離する。
+
+- **配置場所**: `components/` 配下（コンポーネントの近くに配置）
+- **命名規則**: `{ComponentName}Props`
 
 ```typescript
-// types.ts
-import type { SalaryRecord } from "./schema";
+// components/types.ts
+import type { SalaryRecord } from "../schema";
 
 export type PageHeaderProps = {
   recordsCount: number;
@@ -139,6 +144,19 @@ export type PayslipsTableProps = {
   records: SalaryRecord[];
   onRecordClick: (record: SalaryRecord) => void;
 };
+```
+
+```typescript
+// components/PageHeader.tsx
+import type { PageHeaderProps } from "./types";
+
+export function PageHeader({
+  recordsCount,
+  selectedYear,
+  onYearChange,
+}: PageHeaderProps) {
+  // ...
+}
 ```
 
 Props 型が少ない場合（1-2個）は、コンポーネントファイル内で直接定義しても良い。

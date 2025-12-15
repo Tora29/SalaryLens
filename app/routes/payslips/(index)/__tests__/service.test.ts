@@ -2,11 +2,11 @@ import { describe, it, expect } from "vitest";
 
 import type { SalaryRecord } from "../schema";
 import {
-  formatMinutesToHoursAndMinutes,
   generateCsvContent,
   generateCsvFilename,
   filterRecordsForExport,
 } from "../service";
+import { formatMinutesToHoursAndMinutes } from "~/shared/utils/format";
 
 // テスト用のモックデータ
 function createMockRecord(overrides: Partial<SalaryRecord> = {}): SalaryRecord {

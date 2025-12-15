@@ -1,3 +1,4 @@
+// 型定義
 import type { SalaryRecord, SummaryData } from "./schema";
 
 /**

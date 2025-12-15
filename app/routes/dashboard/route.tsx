@@ -1,15 +1,20 @@
-import type { Route } from "./+types/route";
-import { TrendingUp, Wallet, Calendar, Banknote } from "lucide-react";
-import { RouteErrorBoundary } from "~/shared/components/RouteErrorBoundary";
+// ライブラリ
+import { Banknote, Calendar, TrendingUp, Wallet } from "lucide-react";
 
-// 子コンポーネント用の型エクスポート（+types から抽出）
-export type MonthlySalary =
-  Route.ComponentProps["loaderData"]["monthlySalaries"][number];
+// 型定義
+import type { Route } from "./+types/route";
+
+// サーバー・ロジック
 import { getDashboardData } from "./server";
+
+// 共有コンポーネント・ユーティリティ
+import { RouteErrorBoundary } from "~/shared/components/RouteErrorBoundary";
 import { formatCurrency } from "~/shared/utils/format";
-import { SummaryCard } from "./components/SummaryCard";
-import { SalaryChart } from "./components/SalaryChart";
+
+// ローカルコンポーネント
 import { RecentHistory } from "./components/RecentHistory";
+import { SalaryChart } from "./components/SalaryChart";
+import { SummaryCard } from "./components/SummaryCard";
 
 export async function loader(_args: Route.LoaderArgs) {
   return getDashboardData();

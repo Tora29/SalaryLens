@@ -11,7 +11,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { MobileHeader } from "./shared/layout/sidebar/components";
+import { MobileHeader } from "./shared/layout/sidebar/components/MobileHeader";
 import { Sidebar } from "./shared/layout/sidebar/Sidebar";
 import type { Theme } from "./shared/layout/sidebar/schema";
 import { getActiveNavigationItems } from "./shared/layout/sidebar/server";

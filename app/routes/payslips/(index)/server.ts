@@ -8,7 +8,7 @@ import type { LoaderData, SalaryRecord } from "./schema";
 // サーバー・ロジック
 import { MESSAGES, salaryRecordSchema } from "./schema";
 
-// 共有コンポーネント
+// 共有ライブラリ
 import { prisma } from "~/shared/lib/db.server";
 
 /**

@@ -1,4 +1,7 @@
-import type { PayslipData, AllowedFileType } from "./schema";
+// 型定義
+import type { AllowedFileType, PayslipData } from "./schema";
+
+// ローカルスキーマ
 import { ALLOWED_FILE_TYPES } from "./schema";
 
 /**

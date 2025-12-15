@@ -1,9 +1,18 @@
+// ライブラリ
 import { data } from "react-router";
 import { z } from "zod";
-import { prisma } from "~/shared/lib/db.server";
+
+// 型定義
 import type { LoaderData, SalaryRecord } from "./schema";
-import { salaryRecordSchema } from "./schema";
+
+// サーバー・ロジック
 import { calculateSummary, getRecentRecords } from "./service";
+
+// 共有ライブラリ
+import { prisma } from "~/shared/lib/db.server";
+
+// ローカル
+import { salaryRecordSchema } from "./schema";
 
 /**
  * DBから給与レコードを取得する

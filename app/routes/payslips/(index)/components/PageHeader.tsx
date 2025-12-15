@@ -2,7 +2,7 @@
 import { ChevronDown, FileSpreadsheet } from "lucide-react";
 
 // 型定義
-import type { PageHeaderProps } from "../types";
+import type { PageHeaderProps } from "./types";
 
 /**
  * ページヘッダーコンポーネント

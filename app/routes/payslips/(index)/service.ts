@@ -1,15 +1,6 @@
 // 型定義
 import type { ExportRangeType, SalaryRecord } from "./schema";
 
-/**
- * 分を「X時間Y分」形式にフォーマットする
- */
-export function formatMinutesToHoursAndMinutes(totalMinutes: number): string {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return `${hours}時間${minutes}分`;
-}
-
 // CSV出力用のヘッダー
 const CSV_HEADERS = [
   "年月",
