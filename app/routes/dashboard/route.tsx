@@ -1,6 +1,6 @@
-import { isRouteErrorResponse } from "react-router";
 import type { Route } from "./+types/route";
 import { TrendingUp, Wallet, Calendar, Banknote } from "lucide-react";
+import { RouteErrorBoundary } from "~/shared/components/RouteErrorBoundary";
 
 // 子コンポーネント用の型エクスポート（+types から抽出）
 export type MonthlySalary =
@@ -72,31 +72,5 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  if (isRouteErrorResponse(error)) {
-    // data() で投げたエラー（404, 500等）
-    return (
-      <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
-            {error.status}
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">{error.data}</p>
-        </div>
-      </main>
-    );
-  }
-
-  // 予期しないエラー（DB障害、バグ等）
-  return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
-          エラー
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
-          予期しないエラーが発生しました
-        </p>
-      </div>
-    </main>
-  );
+  return <RouteErrorBoundary error={error} />;
 }

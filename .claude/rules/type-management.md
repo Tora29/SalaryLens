@@ -115,9 +115,33 @@ export async function action({ request }: Route.ActionArgs) {
 app/routes/
   {name}/
     route.tsx       # ルート（コントローラー）
-    server.ts       # サービス（ビジネスロジック）
-    schema.ts       # Zodスキーマ + 入力型
+    server.ts       # DBアクセス・外部API
+    service.ts      # ビジネスロジック（純粋関数）
+    schema.ts       # Zodスキーマ + ドメイン型
+    types.ts        # 子コンポーネントのProps型（必要な場合）
 ```
+
+### types.ts の役割
+
+子コンポーネントの Props 型が多い場合に分離する。
+
+```typescript
+// types.ts
+import type { SalaryRecord } from "./schema";
+
+export type PageHeaderProps = {
+  recordsCount: number;
+  selectedYear: number | "all";
+  onYearChange: (value: string) => void;
+};
+
+export type PayslipsTableProps = {
+  records: SalaryRecord[];
+  onRecordClick: (record: SalaryRecord) => void;
+};
+```
+
+Props 型が少ない場合（1-2個）は、コンポーネントファイル内で直接定義しても良い。
 
 ---
 

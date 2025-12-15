@@ -154,7 +154,8 @@ app/routes/
     route.tsx        # ルート（コントローラー）
     server.ts        # DBアクセス・外部API呼び出し
     service.ts       # ビジネスロジック（純粋関数）
-    schema.ts        # Zodスキーマ + 型定義
+    schema.ts        # Zodスキーマ + ドメイン型（ビジネスロジックで使用するデータ型）
+    types.ts         # 子コンポーネントのProps型（必要な場合）
 ```
 
 ## 依存関係のルール
